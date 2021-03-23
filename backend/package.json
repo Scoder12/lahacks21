@@ -9,10 +9,14 @@
   "private": false,
   "scripts": {
     "watch": "tsc -w",
-    "dev": "nodemon dist/index.js"
+    "dev": "nodemon dist/index.js",
+    "build": "tsc -p tsconfig.json"
   },
-  "dependencies": {},
+  "dependencies": {
+    "fastify": "^3.14.0"
+  },
   "devDependencies": {
+    "@types/node": "^14.14.35",
     "nodemon": "^2.0.7",
     "typescript": "^4.2.3"
   }
