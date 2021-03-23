@@ -2,6 +2,7 @@ import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
+import { IFACE, PORT } from "./config";
 import { __PROD__ } from "./constants";
 import { HelloResolver } from "./resolvers/hello";
 
@@ -21,8 +22,8 @@ async function main() {
   });
   apolloServer.applyMiddleware({ app });
 
-  app.listen(8080, () => {
-    console.log(`Server listening at http://127.0.0.1:8080`);
+  app.listen(PORT, IFACE, () => {
+    console.log(`Server listening at http://${IFACE}:${PORT}`);
   });
 }
 

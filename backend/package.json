@@ -15,7 +15,9 @@
   "dependencies": {
     "apollo-server-express": "^2.21.2",
     "class-validator": "^0.13.1",
+    "env-schema": "^3.0.1",
     "express": "^4.17.1",
+    "fluent-json-schema": "^2.0.4",
     "graphql": "^15.5.0",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.1"
