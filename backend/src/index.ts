@@ -1,15 +1,28 @@
 import fastify from "fastify";
+import mercurius from "mercurius";
+import "reflect-metadata";
+import { buildSchema } from "type-graphql";
+import { HelloResolver } from "./resolvers/hello";
 
-const server = fastify();
+const app = fastify();
 
-server.get("/", async () => {
+app.get("/", async () => {
   return "Hello, world!";
 });
 
-server.listen(8080, (err, address) => {
-  if (err) {
-    console.error(err);
-    process.exit(1);
-  }
-  console.log(`Server listening at ${address}`);
-});
+async function main() {
+  const schema = await buildSchema({
+    resolvers: [HelloResolver],
+  });
+  app.register(mercurius, { schema });
+
+  app.listen(8080, (err, address) => {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    console.log(`Server listening at ${address}`);
+  });
+}
+
+if (require.main === module) main();
