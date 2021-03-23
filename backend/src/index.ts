@@ -1,27 +1,28 @@
-import fastify from "fastify";
-import mercurius from "mercurius";
+import { ApolloServer } from "apollo-server-express";
+import express from "express";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
+import { __PROD__ } from "./constants";
 import { HelloResolver } from "./resolvers/hello";
 
-const app = fastify();
+const app = express();
 
-app.get("/", async () => {
-  return "Hello, world!";
+app.get("/", (_, res) => {
+  res.send("Hello, world!");
 });
 
 async function main() {
   const schema = await buildSchema({
     resolvers: [HelloResolver],
   });
-  app.register(mercurius, { schema });
+  const apolloServer = new ApolloServer({
+    schema,
+    tracing: !__PROD__,
+  });
+  apolloServer.applyMiddleware({ app });
 
-  app.listen(8080, (err, address) => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-    console.log(`Server listening at ${address}`);
+  app.listen(8080, () => {
+    console.log(`Server listening at http://127.0.0.1:8080`);
   });
 }
 
