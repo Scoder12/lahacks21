@@ -1,10 +1,5 @@
 import argon2 from "argon2";
 import normalizeEmail from "normalize-email";
-import { COOKIE_NAME } from "src/constants";
-import { User } from "src/entities/User";
-import { ResolverContext } from "src/types/context";
-import { RegistrationInput } from "src/types/RegistrationInput";
-import { validateRegistration } from "src/utils/validateRegistration";
 import {
   Arg,
   Ctx,
@@ -14,6 +9,11 @@ import {
   Query,
   Resolver,
 } from "type-graphql";
+import { COOKIE_NAME } from "../constants";
+import { User } from "../entities/User";
+import { ResolverContext } from "../types/context";
+import { RegistrationInput } from "../types/RegistrationInput";
+import { validateRegistration } from "../utils/validateRegistration";
 
 // Benchmark time for 1 hash:
 // ~1050ms on my 12 thread system
@@ -83,15 +83,25 @@ export class UserResolver {
     } catch (e) {
       // Check for "unique_violation" error
       if (e && e.code === "23505") {
-        // Username is the only unique field
-        return {
-          errors: [
-            {
-              field: "username",
-              message: "Username is already taken",
-            },
-          ],
-        };
+        if (e.constraint === "user_email_unique") {
+          return {
+            errors: [
+              {
+                field: "email",
+                message: "Email is already taken",
+              },
+            ],
+          };
+        } else if (e.constraint === "user_username_unique") {
+          return {
+            errors: [
+              {
+                field: "username",
+                message: "Username is already taken",
+              },
+            ],
+          };
+        }
       }
       // Don't swallow real errors
       throw e;
