@@ -28,6 +28,9 @@ export class User extends BaseEntity {
   @Column()
   password!: string;
 
+  @Column({ default: false })
+  isAdmin!: boolean;
+
   @Field(() => [Project])
   @OneToMany(() => Project, (project) => project.author)
   projects!: Project[];

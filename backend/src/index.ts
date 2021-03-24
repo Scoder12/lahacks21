@@ -11,6 +11,7 @@ import { COOKIE_NAME, __PROD__ } from "./constants";
 import { Category } from "./entities/Category";
 import { Project } from "./entities/Project";
 import { User } from "./entities/User";
+import { CategoryResolver } from "./resolvers/category";
 import { HelloResolver } from "./resolvers/hello";
 import { ProjectResolver } from "./resolvers/project";
 import { UserResolver } from "./resolvers/user";
@@ -57,7 +58,7 @@ async function main() {
   );
 
   const schema = await buildSchema({
-    resolvers: [HelloResolver, UserResolver, ProjectResolver],
+    resolvers: [HelloResolver, UserResolver, ProjectResolver, CategoryResolver],
   });
   const apolloServer = new ApolloServer({
     schema,
