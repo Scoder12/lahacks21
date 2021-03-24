@@ -18,25 +18,66 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
+  categories: Array<Category>;
+  categoryById?: Maybe<Category>;
   hello: Scalars['String'];
   me?: Maybe<User>;
+  isAdmin: Scalars['Boolean'];
 };
+
+
+export type QueryCategoryByIdArgs = {
+  id: Scalars['Float'];
+};
+
+export type Category = {
+  __typename?: 'Category';
+  id: Scalars['Float'];
+  name: Scalars['String'];
+  projects: Array<Project>;
+};
+
+export type Project = {
+  __typename?: 'Project';
+  id: Scalars['Float'];
+  title: Scalars['String'];
+  text: Scalars['String'];
+  authorId: Scalars['Float'];
+  categoryId: Scalars['Float'];
+  tags: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+};
+
 
 export type User = {
   __typename?: 'User';
   id: Scalars['Float'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
   username: Scalars['String'];
   email: Scalars['String'];
+  projects: Array<Project>;
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
-
 
 export type Mutation = {
   __typename?: 'Mutation';
+  adminCreateCategory: Category;
+  createProject: ProjectResponse;
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  changeAdminStatus: Scalars['Boolean'];
+};
+
+
+export type MutationAdminCreateCategoryArgs = {
+  name: Scalars['String'];
+};
+
+
+export type MutationCreateProjectArgs = {
+  input: ProjectInput;
 };
 
 
@@ -50,16 +91,35 @@ export type MutationLoginArgs = {
   usernameOrEmail: Scalars['String'];
 };
 
-export type UserResponse = {
-  __typename?: 'UserResponse';
+
+export type MutationChangeAdminStatusArgs = {
+  isAdmin: Scalars['Boolean'];
+  userId: Scalars['Float'];
+};
+
+export type ProjectResponse = {
+  __typename?: 'ProjectResponse';
   errors?: Maybe<Array<FieldError>>;
-  user?: Maybe<User>;
+  project?: Maybe<Project>;
 };
 
 export type FieldError = {
   __typename?: 'FieldError';
   field: Scalars['String'];
   message: Scalars['String'];
+};
+
+export type ProjectInput = {
+  title: Scalars['String'];
+  text: Scalars['String'];
+  categoryId: Scalars['Float'];
+  tags: Scalars['String'];
+};
+
+export type UserResponse = {
+  __typename?: 'UserResponse';
+  errors?: Maybe<Array<FieldError>>;
+  user?: Maybe<User>;
 };
 
 export type RegistrationInput = {
@@ -101,17 +161,6 @@ export type LogoutMutation = (
   & Pick<Mutation, 'logout'>
 );
 
-export type MeQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MeQuery = (
-  { __typename?: 'Query' }
-  & { me?: Maybe<(
-    { __typename?: 'User' }
-    & UserFragmentFragment
-  )> }
-);
-
 export type RegisterMutationVariables = Exact<{
   options: RegistrationInput;
 }>;
@@ -129,6 +178,17 @@ export type RegisterMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )>> }
   ) }
+);
+
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = (
+  { __typename?: 'Query' }
+  & { me?: Maybe<(
+    { __typename?: 'User' }
+    & UserFragmentFragment
+  )> }
 );
 
 export const UserFragmentFragmentDoc = gql`
@@ -163,17 +223,6 @@ export const LogoutDocument = gql`
 export function useLogoutMutation() {
   return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
 };
-export const MeDocument = gql`
-    query Me {
-  me {
-    ...UserFragment
-  }
-}
-    ${UserFragmentFragmentDoc}`;
-
-export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
-};
 export const RegisterDocument = gql`
     mutation Register($options: RegistrationInput!) {
   register(options: $options) {
@@ -190,4 +239,15 @@ export const RegisterDocument = gql`
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const MeDocument = gql`
+    query Me {
+  me {
+    ...UserFragment
+  }
+}
+    ${UserFragmentFragmentDoc}`;
+
+export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
 };
