@@ -11,6 +11,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
+import NextLink from "next/link";
 import { FC, PropsWithChildren } from "react";
 import { createUrqlClient } from "src/utils/createUrqlClient";
 
@@ -35,9 +36,11 @@ export const Index: FC<IndexProps> = ({}: IndexProps) => {
           <Box fontSize="20pt">Innopact</Box>
         </Flex>
         <Flex align="center">
-          <Button colorScheme="gray" mr={2} px={20}>
-            Login
-          </Button>
+          <NextLink href="/login" passHref>
+            <Button as="a" colorScheme="gray" mr={2} px={20}>
+              Login
+            </Button>
+          </NextLink>
         </Flex>
       </Flex>
       {/* Hero */}
@@ -52,7 +55,9 @@ export const Index: FC<IndexProps> = ({}: IndexProps) => {
           <CheckItem>Make the world a better place</CheckItem>
         </List>
         <Flex mt={5}>
-          <Button colorScheme="purple">Get Started</Button>
+          <NextLink href="/register" passHref>
+            <Button colorScheme="purple">Get Started</Button>
+          </NextLink>
         </Flex>
       </Box>
     </>
