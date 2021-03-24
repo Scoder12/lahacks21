@@ -65,9 +65,12 @@ async function main() {
     tracing: !__PROD__,
     context: ({ req, res }): ResolverContext => ({ conn, req, res }),
   });
-  apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware({
+    app,
+    cors: { origin: CONFIG.FRONTEND_URL, credentials: true },
+  });
 
-  app.listen(PORT, IFACE, () => {
+  app.listen(CONFIG.PORT, CONFIG.IFACE, () => {
     console.log(`Server listening at http://${IFACE}:${PORT}`);
   });
 }
