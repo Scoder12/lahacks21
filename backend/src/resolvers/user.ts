@@ -8,9 +8,12 @@ import {
   ObjectType,
   Query,
   Resolver,
+  UseMiddleware,
 } from "type-graphql";
 import { COOKIE_NAME } from "../constants";
 import { User } from "../entities/User";
+import { authed } from "../middlewares/authed";
+import { isAdmin } from "../middlewares/isAdmin";
 import { ResolverContext } from "../types/context";
 import { FieldError } from "../types/FieldError";
 import { RegistrationInput } from "../types/RegistrationInput";
@@ -151,5 +154,25 @@ export class UserResolver {
         resolve(true);
       })
     );
+  }
+
+  // This is necessary because we don't want users to know whether an arbitrary user is
+  //  an admin but they can know if the current user is an admin
+  @Query(() => Boolean)
+  @UseMiddleware(authed)
+  async isAdmin(@Ctx() { req }: ResolverContext): Promise<boolean> {
+    const user = await User.findOneOrFail(req.session.userId);
+    return user.isAdmin;
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(authed)
+  @UseMiddleware(isAdmin)
+  async changeAdminStatus(
+    @Arg("userId") userId: number,
+    @Arg("isAdmin") isAdmin: boolean
+  ): Promise<boolean> {
+    await User.update(userId, { isAdmin });
+    return true;
   }
 }
