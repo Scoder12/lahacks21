@@ -12,6 +12,7 @@ import {
 import { COOKIE_NAME } from "../constants";
 import { User } from "../entities/User";
 import { ResolverContext } from "../types/context";
+import { FieldError } from "../types/FieldError";
 import { RegistrationInput } from "../types/RegistrationInput";
 import { validateRegistration } from "../utils/validateRegistration";
 
@@ -27,15 +28,6 @@ const argon2Config: argon2.Options & { raw: false } = {
   timeCost: 512,
   raw: false,
 };
-
-@ObjectType()
-export class FieldError {
-  @Field()
-  field: string;
-
-  @Field()
-  message: string;
-}
 
 @ObjectType()
 export class UserResponse {

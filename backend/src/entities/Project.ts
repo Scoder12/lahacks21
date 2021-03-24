@@ -39,9 +39,10 @@ export class Project extends BaseEntity {
   @ManyToOne(() => Category, (category) => category.projects)
   category!: Category;
 
-  @Field(() => [String])
-  @Column("text", { array: true })
-  tags: string[];
+  // CSV of tags
+  @Field()
+  @Column()
+  tags: string;
 
   @Field()
   @CreateDateColumn()

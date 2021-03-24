@@ -12,6 +12,7 @@ import { Category } from "./entities/Category";
 import { Project } from "./entities/Project";
 import { User } from "./entities/User";
 import { HelloResolver } from "./resolvers/hello";
+import { ProjectResolver } from "./resolvers/project";
 import { UserResolver } from "./resolvers/user";
 import { ResolverContext } from "./types/context";
 
@@ -56,7 +57,7 @@ async function main() {
   );
 
   const schema = await buildSchema({
-    resolvers: [HelloResolver, UserResolver],
+    resolvers: [HelloResolver, UserResolver, ProjectResolver],
   });
   const apolloServer = new ApolloServer({
     schema,
