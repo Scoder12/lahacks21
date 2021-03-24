@@ -8,6 +8,8 @@ import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import { CONFIG, DB, IFACE, PORT } from "./config";
 import { COOKIE_NAME, __PROD__ } from "./constants";
+import { Category } from "./entities/Category";
+import { Project } from "./entities/Project";
 import { User } from "./entities/User";
 import { HelloResolver } from "./resolvers/hello";
 import { UserResolver } from "./resolvers/user";
@@ -21,7 +23,7 @@ async function main() {
     database: DB.NAME,
     username: DB.USER,
     password: DB.PWD,
-    entities: [User],
+    entities: [User, Project, Category],
     synchronize: true,
     logging: !__PROD__,
   });
