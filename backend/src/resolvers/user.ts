@@ -49,21 +49,20 @@ export class UserResponse {
 @Resolver()
 export class UserResolver {
   @Query(() => User, { nullable: true })
-  async me(@Ctx() { em, req }: ResolverContext): Promise<User | null> {
+  async me(@Ctx() { req }: ResolverContext): Promise<User | undefined> {
     if (!req.session.userId) {
       // Not logged in
-      return null;
+      return undefined;
     }
 
-    const user = await em.findOne(User, { id: req.session.userId });
-    return user;
+    return User.findOne(req.session.userId);
   }
 
   @Mutation(() => UserResponse)
   async register(
     @Arg("options")
     { email, username, password }: RegistrationInput,
-    @Ctx() { em, req }: ResolverContext
+    @Ctx() { req }: ResolverContext
   ): Promise<UserResponse> {
     const errors = validateRegistration({ email, username, password });
 
@@ -73,13 +72,13 @@ export class UserResolver {
     const normalizedEmail = normalizeEmail(email);
 
     const hashedPassword = await argon2.hash(password, argon2Config);
-    const user = await em.create(User, {
-      email: normalizedEmail,
-      username,
-      password: hashedPassword,
-    });
+    let user: User;
     try {
-      await em.persistAndFlush(user);
+      user = await User.create({
+        email: normalizedEmail,
+        username,
+        password: hashedPassword,
+      }).save();
     } catch (e) {
       // Check for "unique_violation" error
       if (e && e.code === "23505") {
@@ -116,15 +115,15 @@ export class UserResolver {
   async login(
     @Arg("usernameOrEmail") usernameOrEmail: string,
     @Arg("password") password: string,
-    @Ctx() { em, req }: ResolverContext
+    @Ctx() { req }: ResolverContext
   ): Promise<UserResponse> {
-    const user = await em.findOne(
-      User,
-      // Emails must have an @ and usernames must not according to validation logic
-      usernameOrEmail.includes("@")
-        ? { email: normalizeEmail(usernameOrEmail) }
-        : { username: usernameOrEmail }
-    );
+    const user = await User.findOne({
+      where:
+        // Emails must have an @ and usernames must not according to validation logic
+        usernameOrEmail.includes("@")
+          ? { email: normalizeEmail(usernameOrEmail) }
+          : { username: usernameOrEmail },
+    });
 
     const badCredsError = {
       field: "usernameOrEmail",

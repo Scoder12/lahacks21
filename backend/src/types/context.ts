@@ -1,9 +1,9 @@
-import { Connection, EntityManager, IDatabaseDriver } from "@mikro-orm/core";
 import express from "express";
 import { Session, SessionData } from "express-session";
+import { Connection } from "typeorm";
 
 export interface ResolverContext {
-  em: EntityManager<any> & EntityManager<IDatabaseDriver<Connection>>;
+  conn: Connection;
   req: express.Request & {
     session: Session & Partial<SessionData> & { userId?: number };
   };
