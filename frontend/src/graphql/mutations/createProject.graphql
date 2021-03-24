@@ -1,0 +1,18 @@
+mutation createProject(
+  $title: String!
+  $text: String!
+  $categoryId: Float!
+  $tags: String!
+) {
+  createProject(
+    input: { title: $title, text: $text, categoryId: $categoryId, tags: $tags }
+  ) {
+    errors {
+      field
+      message
+    }
+    project {
+      id
+    }
+  }
+}

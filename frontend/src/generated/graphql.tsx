@@ -133,6 +133,28 @@ export type UserFragmentFragment = (
   & Pick<User, 'id' | 'username'>
 );
 
+export type CreateProjectMutationVariables = Exact<{
+  title: Scalars['String'];
+  text: Scalars['String'];
+  categoryId: Scalars['Float'];
+  tags: Scalars['String'];
+}>;
+
+
+export type CreateProjectMutation = (
+  { __typename?: 'Mutation' }
+  & { createProject: (
+    { __typename?: 'ProjectResponse' }
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & Pick<FieldError, 'field' | 'message'>
+    )>>, project?: Maybe<(
+      { __typename?: 'Project' }
+      & Pick<Project, 'id'>
+    )> }
+  ) }
+);
+
 export type LoginMutationVariables = Exact<{
   usernameOrEmail: Scalars['String'];
   password: Scalars['String'];
@@ -180,6 +202,17 @@ export type RegisterMutation = (
   ) }
 );
 
+export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CategoriesQuery = (
+  { __typename?: 'Query' }
+  & { categories: Array<(
+    { __typename?: 'Category' }
+    & Pick<Category, 'id' | 'name'>
+  )> }
+);
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -197,6 +230,25 @@ export const UserFragmentFragmentDoc = gql`
   username
 }
     `;
+export const CreateProjectDocument = gql`
+    mutation createProject($title: String!, $text: String!, $categoryId: Float!, $tags: String!) {
+  createProject(
+    input: {title: $title, text: $text, categoryId: $categoryId, tags: $tags}
+  ) {
+    errors {
+      field
+      message
+    }
+    project {
+      id
+    }
+  }
+}
+    `;
+
+export function useCreateProjectMutation() {
+  return Urql.useMutation<CreateProjectMutation, CreateProjectMutationVariables>(CreateProjectDocument);
+};
 export const LoginDocument = gql`
     mutation Login($usernameOrEmail: String!, $password: String!) {
   login(usernameOrEmail: $usernameOrEmail, password: $password) {
@@ -239,6 +291,18 @@ export const RegisterDocument = gql`
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const CategoriesDocument = gql`
+    query Categories {
+  categories {
+    id
+    name
+  }
+}
+    `;
+
+export function useCategoriesQuery(options: Omit<Urql.UseQueryArgs<CategoriesQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<CategoriesQuery>({ query: CategoriesDocument, ...options });
 };
 export const MeDocument = gql`
     query Me {
