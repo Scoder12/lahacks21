@@ -46,7 +46,6 @@ export class ProjectResolver {
     @Arg("input") { title, text, categoryId, tags }: ProjectInput,
     @Ctx() { req }: ResolverContext
   ): Promise<ProjectResponse> {
-    const category = await Category.findOneOrFail(categoryId);
     if (!/^[a-zA-Z0-9.,]+$/g.test(tags))
       return {
         errors: [
@@ -57,6 +56,10 @@ export class ProjectResolver {
           },
         ],
       };
+
+    const category = await Category.findOne(categoryId);
+    if (!category)
+      return { errors: [{ field: "category", message: "Unknown category" }] };
 
     return {
       project: await Project.create({
