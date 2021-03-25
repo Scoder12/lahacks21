@@ -16,6 +16,7 @@ import { HelloResolver } from "./resolvers/hello";
 import { ProjectResolver } from "./resolvers/project";
 import { UserResolver } from "./resolvers/user";
 import { ResolverContext } from "./types/context";
+import { hashPassword } from "./utils/hashPassword";
 
 async function main() {
   const conn = await createConnection({
@@ -29,6 +30,25 @@ async function main() {
     synchronize: true,
     logging: !__PROD__,
   });
+  if (CONFIG.ADMIN_PASSWORD) {
+    const adminUser = await User.findOne({ where: { username: "admin" } });
+    if (!adminUser) {
+      console.log("Creating admin user...");
+      const newUser = await User.create({
+        username: "admin",
+        email: "admin@admin.com",
+        password: await hashPassword(CONFIG.ADMIN_PASSWORD),
+        isAdmin: true,
+      }).save();
+      console.log(`New admin user created with ID ${newUser.id}`);
+    } else {
+      console.log("Admin account already exists");
+    }
+  } else {
+    console.log(
+      "Not creating an admin account, set ADMIN_PASSWORD to create one."
+    );
+  }
 
   const app = express();
 
