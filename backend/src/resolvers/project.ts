@@ -68,6 +68,7 @@ export class ProjectResolver {
         category,
         categoryId: category.id,
         authorId: req.session.userId,
+        tags,
       }).save(),
     };
   }
