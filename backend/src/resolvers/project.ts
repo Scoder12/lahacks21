@@ -3,6 +3,7 @@ import {
   Ctx,
   Field,
   InputType,
+  Int,
   Mutation,
   ObjectType,
   Query,
@@ -71,6 +72,7 @@ export class ProjectResolver {
 
   @Query(() => [Project])
   projects(
+    @Arg("category", () => Int, { nullable: true }) category: number | null,
     @Arg("limit") limit: number,
     // cursor is too big to be an Int, so accept a string and parseInt it
     @Arg("cursor", () => String, { nullable: true }) cursor: string
@@ -85,6 +87,10 @@ export class ProjectResolver {
       .orderBy('"createdAt"', "DESC")
       // take is better than .limit() for pagination
       .take(realLimit);
+
+    if (category) {
+      qb.where('"categoryId" = :category', { category });
+    }
 
     if (cursor) {
       const cursorMs = parseInt(cursor);
