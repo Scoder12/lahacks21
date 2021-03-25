@@ -14,8 +14,10 @@ import {
 } from "src/generated/graphql";
 import { createUrqlClient } from "src/utils/createUrqlClient";
 import { toErrorMap } from "src/utils/toErrorMap";
+import { useRequireLogin } from "src/utils/useRequireLogin";
 
 function CreateProject() {
+  useRequireLogin();
   const router = useRouter();
   const [{ data: categoryData, fetching }] = useCategoriesQuery();
   const [, createProject] = useCreateProjectMutation();
