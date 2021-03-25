@@ -1,26 +1,44 @@
-import { Button, Select, Text, useTheme } from "@chakra-ui/react";
+import { Button, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { withUrqlClient } from "next-urql";
 import React from "react";
-import InputField, { TextareaField } from "src/components/InputField";
+import InputField, {
+  SelectField,
+  TextareaField,
+} from "src/components/InputField";
 import Wrapper from "src/components/Wrapper";
-import { useCategoriesQuery } from "src/generated/graphql";
+import {
+  useCategoriesQuery,
+  useCreateProjectMutation,
+} from "src/generated/graphql";
 import { createUrqlClient } from "src/utils/createUrqlClient";
+import { toErrorMap } from "src/utils/toErrorMap";
 
 function CreateProject() {
   //const router = useRouter();
   const [{ data: categoryData, fetching }] = useCategoriesQuery();
-  const theme = useTheme();
-
-  console.log(theme, fetching, categoryData);
+  const [, createProject] = useCreateProjectMutation();
 
   // TODO: Show "Login" header here and add a link to register
   return (
     <Wrapper small={true}>
       <Formik
-        initialValues={{ usernameOrEmail: "", password: "" }}
-        onSubmit={async (values, { setErrors }) => {
+        initialValues={{ title: "", text: "", categoryId: -1, tags: "" }}
+        onSubmit={async (stringValues, { setErrors }) => {
+          // categoryId should be a number
+          const categoryId = Number(stringValues.categoryId);
+          if (isNaN(categoryId)) {
+            setErrors({ categoryId: "Invalid category" });
+          }
+          const values = { ...stringValues, categoryId };
           console.log(values);
+
+          const { data } = await createProject(values);
+          if (data?.createProject.errors) {
+            setErrors(toErrorMap(data.createProject.errors));
+          } else {
+            console.log(data);
+          }
         }}
       >
         {({ isSubmitting }) => (
@@ -34,18 +52,28 @@ function CreateProject() {
               name="text"
               placeholder="Give your project a description"
               label="Content"
+              chakraProps={{ mb: "2" }}
             />
             {categoryData ? (
-              <Select>
+              <SelectField
+                name="categoryId"
+                label="Category"
+                chakraProps={{ mb: "2" }}
+              >
                 {categoryData.categories.map((i) => (
                   <option key={i.id} value={i.id}>
                     {i.name}
                   </option>
                 ))}
-              </Select>
+              </SelectField>
             ) : (
               <Text>Categories Loading...</Text>
             )}
+            <InputField
+              label="Tags, separated by commas"
+              name="tags"
+              placeholder="frontend,react,next.js"
+            />
             <Button
               colorScheme="blue"
               isLoading={isSubmitting}

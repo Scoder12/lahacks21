@@ -5,6 +5,8 @@ import {
   Input,
   InputGroup,
   InputProps,
+  Select,
+  SelectProps,
   Textarea,
 } from "@chakra-ui/react";
 import { useField } from "formik";
@@ -23,7 +25,8 @@ export type InputFieldProps = {
 
 // This is not worth haggling with typescript for, anying it out
 export const FieldComponent = <T extends Object>(
-  C: any
+  C: any,
+  inputGroup: boolean
 ): FC<InputFieldProps & T> => ({
   name,
   label,
@@ -33,24 +36,32 @@ export const FieldComponent = <T extends Object>(
 }: PropsWithChildren<InputFieldProps & T>) => {
   const [field, { error }] = useField({ name, ...props });
 
+  const inner = inputGroup ? (
+    <C {...field} {...props} {...chakraProps} id={field.name} />
+  ) : (
+    <C {...field} {...props} {...chakraProps} id={field.name}>
+      {children}
+    </C>
+  );
+
   return (
     <FormControl isInvalid={!!error}>
       <FormLabel htmlFor={field.name}>{label}</FormLabel>
-      <InputGroup size="md">
-        <C {...field} {...props} {...chakraProps} id={field.name} />
-        {children}
-      </InputGroup>
+      {inputGroup ? <InputGroup size="md">{inner}</InputGroup> : inner}
       {error ? <FormErrorMessage>{error}</FormErrorMessage> : null}
     </FormControl>
   );
 };
 
 export const InputField = FieldComponent<InputHTMLAttributes<HTMLInputElement>>(
-  Input
+  Input,
+  true
 );
 
 export const TextareaField = FieldComponent<
   TextareaHTMLAttributes<HTMLTextAreaElement>
->(Textarea);
+>(Textarea, true);
+
+export const SelectField = FieldComponent<SelectProps>(Select, false);
 
 export default InputField;
