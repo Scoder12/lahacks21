@@ -75,7 +75,7 @@ export class ProjectResolver {
     @Arg("category", () => Int, { nullable: true }) category: number | null,
     @Arg("limit") limit: number,
     // cursor is too big to be an Int, so accept a string and parseInt it
-    @Arg("cursor", () => String, { nullable: true }) cursor: string
+    @Arg("cursor", () => String, { nullable: true }) cursor: string | null
   ): Promise<Project[]> {
     // Cap limit at 50 so that entire database can't be fetched with a single query
     const realLimit = Math.min(limit, 50);
