@@ -22,7 +22,6 @@ function CreateProject() {
   const [{ data: categoryData, fetching }] = useCategoriesQuery();
   const [, createProject] = useCreateProjectMutation();
 
-  // TODO: Show "Login" header here and add a link to register
   return (
     <Wrapper>
       <Formik
