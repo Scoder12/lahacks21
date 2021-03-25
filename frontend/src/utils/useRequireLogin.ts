@@ -8,7 +8,7 @@ export const useRequireLogin = () => {
 
   useEffect(() => {
     if (!fetching && !data?.me) {
-      router.replace("/login");
+      router.replace(`/login?next=${encodeURIComponent(router.route)}`);
     }
   }, [data, fetching, router]);
 };
