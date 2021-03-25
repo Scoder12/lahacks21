@@ -8,26 +8,30 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useField } from "formik";
-import React, { FC, InputHTMLAttributes, PropsWithChildren } from "react";
+import React, {
+  FC,
+  InputHTMLAttributes,
+  PropsWithChildren,
+  TextareaHTMLAttributes,
+} from "react";
 
-export type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
+export type InputFieldProps = {
   name: string;
   label: string;
   chakraProps?: InputProps;
-  textArea?: boolean;
 };
 
-export const InputField: FC<InputFieldProps> = ({
+// This is not worth haggling with typescript for, anying it out
+export const FieldComponent = <T extends Object>(
+  C: any
+): FC<InputFieldProps & T> => ({
+  name,
   label,
   children,
-  size: _,
   chakraProps = {},
-  textArea,
   ...props
-}: PropsWithChildren<InputFieldProps>) => {
-  const [field, { error }] = useField(props);
-
-  const C = textArea ? Textarea : Input;
+}: PropsWithChildren<InputFieldProps & T>) => {
+  const [field, { error }] = useField({ name, ...props });
 
   return (
     <FormControl isInvalid={!!error}>
@@ -40,5 +44,13 @@ export const InputField: FC<InputFieldProps> = ({
     </FormControl>
   );
 };
+
+export const InputField = FieldComponent<InputHTMLAttributes<HTMLInputElement>>(
+  Input
+);
+
+export const TextareaField = FieldComponent<
+  TextareaHTMLAttributes<HTMLTextAreaElement>
+>(Textarea);
 
 export default InputField;
