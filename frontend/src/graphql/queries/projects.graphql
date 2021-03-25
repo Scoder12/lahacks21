@@ -3,7 +3,10 @@ query Projects($categoryId: Int, $limit: Float!, $cursor: String) {
     id
     createdAt
     title
-    text
+    snippet {
+      content
+      isTrimmed
+    }
     categoryId
   }
 }

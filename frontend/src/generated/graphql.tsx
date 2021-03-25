@@ -55,8 +55,15 @@ export type Project = {
   tags: Scalars['String'];
   createdAt: Scalars['Timestamp'];
   updatedAt: Scalars['Timestamp'];
+  snippet: SnippetResponse;
 };
 
+
+export type SnippetResponse = {
+  __typename?: 'SnippetResponse';
+  content: Scalars['String'];
+  isTrimmed: Scalars['Boolean'];
+};
 
 export type User = {
   __typename?: 'User';
@@ -243,7 +250,11 @@ export type ProjectsQuery = (
   { __typename?: 'Query' }
   & { projects: Array<(
     { __typename?: 'Project' }
-    & Pick<Project, 'id' | 'createdAt' | 'title' | 'text' | 'categoryId'>
+    & Pick<Project, 'id' | 'createdAt' | 'title' | 'categoryId'>
+    & { snippet: (
+      { __typename?: 'SnippetResponse' }
+      & Pick<SnippetResponse, 'content' | 'isTrimmed'>
+    ) }
   )> }
 );
 
@@ -344,7 +355,10 @@ export const ProjectsDocument = gql`
     id
     createdAt
     title
-    text
+    snippet {
+      content
+      isTrimmed
+    }
     categoryId
   }
 }

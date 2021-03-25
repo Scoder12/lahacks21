@@ -2,12 +2,14 @@ import {
   Arg,
   Ctx,
   Field,
+  FieldResolver,
   InputType,
   Int,
   Mutation,
   ObjectType,
   Query,
   Resolver,
+  Root,
   UseMiddleware,
 } from "type-graphql";
 import { getConnection } from "typeorm";
@@ -40,8 +42,27 @@ export class ProjectResponse {
   project?: Project;
 }
 
-@Resolver()
+@ObjectType()
+export class SnippetResponse {
+  @Field()
+  content: string;
+
+  @Field()
+  isTrimmed: boolean;
+}
+
+@Resolver(Project)
 export class ProjectResolver {
+  @FieldResolver()
+  snippet(@Root() root: Project): SnippetResponse {
+    const SNIPPET_TRIM_AMOUNT = 50;
+
+    return {
+      content: root.text.slice(0, SNIPPET_TRIM_AMOUNT),
+      isTrimmed: root.text.length > SNIPPET_TRIM_AMOUNT,
+    };
+  }
+
   @Mutation(() => ProjectResponse)
   @UseMiddleware(authed)
   async createProject(
