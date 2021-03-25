@@ -76,11 +76,9 @@ const profile = () => {
           </div>
           <div style={{ flex: 1 }}>
             <div className="input-img-cont" onClick={handleInputImgClick}>
-              <img
-                className="profile-img"
-                src="https://motivateagirl.org/wp-content/uploads/2018/03/human.png"
-                alt="Profile"
-              />
+              <div className="img-bg">
+                <img className="profile-img" src={"/user.svg"} alt="Profile" />
+              </div>
               <p className="upload-img">Upload Photo</p>
             </div>
             <input

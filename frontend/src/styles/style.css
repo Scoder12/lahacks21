@@ -55,13 +55,20 @@
   background-color: #333;
 }
 
-.profile .profile-img {
+.profile .img-bg {
+  background-color: var(--primary);
   width: 70%;
   margin: 30px auto;
   padding: 30px;
   border-radius: 50%;
-  background-color: var(--primary);
-  fill: #333;
+}
+
+.profile .profile-img {
+  background-color: transparent;
+  filter: invert(11%) sepia(96%) saturate(0%) hue-rotate(202deg) brightness(98%)
+    contrast(81%);
+  /* fill: #333; */
+  /* color: #333; */
 }
 
 .profile .upload-img {
