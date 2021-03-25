@@ -17,20 +17,8 @@ import { isAdmin } from "../middlewares/isAdmin";
 import { ResolverContext } from "../types/context";
 import { FieldError } from "../types/FieldError";
 import { RegistrationInput } from "../types/RegistrationInput";
+import { hashPassword } from "../utils/hashPassword";
 import { validateRegistration } from "../utils/validateRegistration";
-
-// Benchmark time for 1 hash:
-// ~1050ms on my 12 thread system
-// ~1830ms on repl.it hacker plan
-// ~3133ms on repl.it regular plan
-// not sure where this will be hosted but seems pretty reasonable to me.
-const argon2Config: argon2.Options & { raw: false } = {
-  type: argon2.argon2id,
-  memoryCost: 4096,
-  parallelism: 1,
-  timeCost: 512,
-  raw: false,
-};
 
 @ObjectType()
 export class UserResponse {
@@ -66,7 +54,7 @@ export class UserResolver {
     // Don't allow people with gmail addresses to make infinite accounts
     const normalizedEmail = normalizeEmail(email);
 
-    const hashedPassword = await argon2.hash(password, argon2Config);
+    const hashedPassword = await hashPassword(password);
     let user: User;
     try {
       user = await User.create({

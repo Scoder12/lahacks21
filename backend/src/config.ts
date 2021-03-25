@@ -10,7 +10,8 @@ export const schema = S.object()
   .prop("DB_USER", S.string().default("postgres"))
   .prop("DB_PWD", S.string().default(""))
   .prop("SESSION_SECRET", S.string().required())
-  .prop("FRONTEND_URL", S.string().required());
+  .prop("FRONTEND_URL", S.string().required())
+  .prop("ADMIN_PASSWORD", S.string());
 
 export const CONFIG = envSchema({ schema }) as {
   PORT: number;
@@ -22,6 +23,7 @@ export const CONFIG = envSchema({ schema }) as {
   DB_PWD: string;
   SESSION_SECRET: string;
   FRONTEND_URL: string;
+  ADMIN_PASSWORD?: string;
 };
 export const DB = {
   HOST: CONFIG.DB_HOST,
