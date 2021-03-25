@@ -5,10 +5,11 @@ import {
   InputType,
   Mutation,
   ObjectType,
+  Query,
   Resolver,
   UseMiddleware,
 } from "type-graphql";
-import { Category } from "../entities/Category";
+import { getConnection } from "typeorm";
 import { Project } from "../entities/Project";
 import { authed } from "../middlewares/authed";
 import { ResolverContext } from "../types/context";
@@ -57,19 +58,40 @@ export class ProjectResolver {
         ],
       };
 
-    const category = await Category.findOne(categoryId);
-    if (!category)
-      return { errors: [{ field: "category", message: "Unknown category" }] };
-
     return {
       project: await Project.create({
         title,
         text,
-        category,
-        categoryId: category.id,
+        categoryId, //category.id,
         authorId: req.session.userId,
         tags,
       }).save(),
     };
+  }
+
+  @Query(() => [Project])
+  projects(
+    @Arg("limit") limit: number,
+    // cursor is too big to be an Int, so accept a string and parseInt it
+    @Arg("cursor", () => String, { nullable: true }) cursor: string
+  ): Promise<Project[]> {
+    // Cap limit at 50 so that entire database can't be fetched with a single query
+    const realLimit = Math.min(limit, 50);
+    const qb = getConnection()
+      .getRepository(Project)
+      .createQueryBuilder("p")
+      // pgsql requires non-lowercase fields to be quoted
+      // Returns newests projects
+      .orderBy('"createdAt"', "DESC")
+      // take is better than .limit() for pagination
+      .take(realLimit);
+
+    if (cursor) {
+      const cursorMs = parseInt(cursor);
+      if (isNaN(cursorMs)) throw new Error("Cursor should be a number");
+      qb.where('"createdAt" < :cursor', { cursor: new Date(cursorMs) });
+    }
+
+    return qb.getMany();
   }
 }

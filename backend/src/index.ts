@@ -79,6 +79,7 @@ async function main() {
 
   const schema = await buildSchema({
     resolvers: [HelloResolver, UserResolver, ProjectResolver, CategoryResolver],
+    dateScalarMode: "timestamp",
   });
   const apolloServer = new ApolloServer({
     schema,
