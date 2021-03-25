@@ -15,7 +15,7 @@ import { createUrqlClient } from "src/utils/createUrqlClient";
 import { toErrorMap } from "src/utils/toErrorMap";
 
 function CreateProject() {
-  //const router = useRouter();
+  const router = useRouter();
   const [{ data: categoryData, fetching }] = useCategoriesQuery();
   const [, createProject] = useCreateProjectMutation();
 
@@ -37,7 +37,7 @@ function CreateProject() {
           if (data?.createProject.errors) {
             setErrors(toErrorMap(data.createProject.errors));
           } else {
-            console.log(data);
+            router.push("/home");
           }
         }}
       >
