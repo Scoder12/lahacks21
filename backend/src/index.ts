@@ -6,7 +6,7 @@ import Redis from "ioredis";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
-import { CONFIG, DB, IFACE, PORT } from "./config";
+import { CONFIG, DB } from "./config";
 import { COOKIE_NAME, __PROD__ } from "./constants";
 import { Category } from "./entities/Category";
 import { Project } from "./entities/Project";
@@ -71,7 +71,7 @@ async function main() {
   });
 
   app.listen(CONFIG.PORT, CONFIG.IFACE, () => {
-    console.log(`Server listening at http://${IFACE}:${PORT}`);
+    console.log(`Server listening at http://${CONFIG.IFACE}:${CONFIG.PORT}`);
   });
 }
 

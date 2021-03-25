@@ -1,4 +1,4 @@
-import { FieldError } from "src/resolvers/user";
+import { FieldError } from "../types/FieldError";
 import { RegistrationInput } from "../types/RegistrationInput";
 import { validateEmail } from "./validateEmail";
 
