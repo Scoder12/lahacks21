@@ -1,5 +1,8 @@
 :root {
   --primary: #a24cc4;
+  --darkgray: #222;
+  --medgray: #333;
+  --lightgray: #eee;
 }
 
 /* Profile Page Start */
@@ -67,8 +70,6 @@
   background-color: transparent;
   filter: invert(11%) sepia(96%) saturate(0%) hue-rotate(202deg) brightness(98%)
     contrast(81%);
-  /* fill: #333; */
-  /* color: #333; */
 }
 
 .profile .upload-img {
@@ -97,3 +98,121 @@
   background-color: var(--primary);
 }
 /* Profile Page End */
+
+/* Challenges Page Start */
+
+.challenge {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.challenge .cont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.challenge h1 {
+  /* margin: 30px 0 0 0; */
+  font-size: 30px;
+}
+
+.challenge p {
+  margin: 15px auto;
+}
+
+.challenge img {
+  width: 700px;
+  /* height: 500px; */
+  max-width: 80%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.challenge h2 {
+  margin: 0 0 50px 0;
+  color: var(--primary);
+  font-size: 30px;
+  font-weight: 500;
+}
+
+/* Challenges Page End */
+
+/* ChallengeInfo Page Start */
+
+.challenge-info {
+}
+
+.challenge-info .challenge-info-card {
+  margin: 30px;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #333;
+  overflow: auto;
+}
+
+.challenge-info .title-cont {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.challenge-info h1 {
+  font-size: 25px;
+  font-weight: 600;
+}
+
+/* .challenge-info .month {
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: var(--primary);
+  color: #333;
+  font-weight: 500;
+} */
+
+.challenge-info .people {
+}
+
+.challenge-info .prizes {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.challenge-info .prize {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.challenge-info p {
+  margin-left: 5px;
+}
+
+.challenge-info .join {
+  margin: auto;
+  padding: 10px 20px;
+  border-radius: 10px;
+  display: block;
+  background-color: var(--primary);
+}
+
+.challenge-info .description-cont {
+  margin: 60px;
+}
+
+.challenge-info .description-header {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--lightgray);
+}
+
+.challenge-info .description-content {
+  margin: 10px 0 0;
+  color: var(--lightgray);
+}
+
+/* ChallengeInfo Page End */

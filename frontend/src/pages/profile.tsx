@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 // import Avatar from "../assets/avatar.png";
 
-const profile = () => {
+const Profile = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [university, setUniversity] = useState("");
@@ -98,4 +98,4 @@ const profile = () => {
   );
 };
 
-export default profile;
+export default Profile;
