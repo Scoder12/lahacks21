@@ -19,7 +19,6 @@ import React, {
 
 export type InputFieldProps = {
   name: string;
-  label: string;
   chakraProps?: InputProps;
 };
 
@@ -29,7 +28,6 @@ export const FieldComponent = <T extends Object>(
   inputGroup: boolean
 ): FC<InputFieldProps & T> => ({
   name,
-  label,
   children,
   chakraProps = {},
   ...props
@@ -46,7 +44,6 @@ export const FieldComponent = <T extends Object>(
 
   return (
     <FormControl isInvalid={!!error}>
-      <FormLabel htmlFor={field.name}>{label}</FormLabel>
       {inputGroup ? <InputGroup size="md">{inner}</InputGroup> : inner}
       {error ? <FormErrorMessage>{error}</FormErrorMessage> : null}
     </FormControl>

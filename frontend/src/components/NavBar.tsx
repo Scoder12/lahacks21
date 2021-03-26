@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Link } from "@chakra-ui/react";
+import { Box, Button, Flex, Image } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { FC } from "react";
 import { useLogoutMutation, useMeQuery } from "src/generated/graphql";
@@ -15,34 +15,60 @@ export const NavBar: FC<NavBarProps> = ({}: NavBarProps) => {
   } else if (data?.me) {
     // User is logged in
     body = (
-      <Flex>
-        <Box mr="2">{data.me.username}</Box>
+      <Flex align="center">
+        <Box mr={10}>{data.me.username}</Box>
         <Button
-          variant="link"
+          as="a"
+          mr={5}
+          w={110}
+          variant="outline"
+          _hover={{ bg: "brand.300", border: "none" }}
           onClick={() => logout()}
           isLoading={logoutFetching}
         >
-          logout
+          Logout
         </Button>
       </Flex>
     );
   } else {
     // User not logged in
     body = (
-      <>
-        <NextLink href="/login">
-          <Link mr="2">Login</Link>
+      <Box>
+        <NextLink href="/login" passHref>
+          <Button
+            as="a"
+            mr={5}
+            w={110}
+            variant="outline"
+            _hover={{ bg: "brand.300", border: "none" }}
+          >
+            Login
+          </Button>
         </NextLink>
-        <NextLink href="/register">
-          <Link>Register</Link>
+        <NextLink href="/register" passHref>
+          <Button
+            as="a"
+            bg="brand.100"
+            mr={10}
+            w={110}
+            _hover={{ bg: "brand.300" }}
+          >
+            Register
+          </Button>
         </NextLink>
-      </>
+      </Box>
     );
   }
 
   return (
-    <Flex bg="tan" p="4">
-      <Box ml="auto">{body}</Box>
+    <Flex justify="space-between" align="center">
+      <NextLink href="/" passHref>
+        <Flex align="center" ml={10} _hover={{ cursor: "pointer" }}>
+          <Image src={"/logo.svg"} alt="Innopact Logo" height="5em" />
+          <Box fontSize="20pt">Innopact</Box>
+        </Flex>
+      </NextLink>
+      {body}
     </Flex>
   );
 };

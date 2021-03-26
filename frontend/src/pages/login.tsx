@@ -1,10 +1,20 @@
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { Box, Button, IconButton, InputRightElement } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  IconButton,
+  InputRightElement,
+  Text,
+} from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
+import NextLink from "next/link";
 import { FC, useState } from "react";
 import InputField from "src/components/InputField";
+import NavBar from "src/components/NavBar";
 import Wrapper from "src/components/Wrapper";
 import { useLoginMutation } from "src/generated/graphql";
 import { createUrqlClient } from "src/utils/createUrqlClient";
@@ -19,66 +29,78 @@ export const Login: FC<LoginProps> = ({}: LoginProps) => {
 
   // TODO: Show "Login" header here and add a link to register
   return (
-    <Wrapper small={true}>
-      <Formik
-        initialValues={{ usernameOrEmail: "", password: "" }}
-        onSubmit={async (values, { setErrors }) => {
-          console.log(values);
-          const response = await login(values);
-          if (response.data?.login.errors) {
-            setErrors(toErrorMap(response.data.login.errors));
-          } else if (response.data?.login.user) {
-            if (typeof router.query.next === "string" && router.query.next) {
-              router.push(router.query.next);
+    <>
+      <NavBar />
+      <Box w="500px" m="auto" mt="10%">
+        <Text mb={4} fontSize="3xl" fontWeight="bold" align="center">
+          Login to Innopact
+        </Text>
+        <Formik
+          initialValues={{ usernameOrEmail: "", password: "" }}
+          onSubmit={async (values, { setErrors }) => {
+            console.log(values);
+            const response = await login(values);
+            if (response.data?.login.errors) {
+              setErrors(toErrorMap(response.data.login.errors));
+            } else if (response.data?.login.user) {
+              if (typeof router.query.next === "string" && router.query.next) {
+                router.push(router.query.next);
+              } else {
+                router.push("/home");
+              }
             } else {
-              router.push("/");
+              setErrors({ usernameOrEmail: "Unexpected response from server" });
             }
-          } else {
-            setErrors({ usernameOrEmail: "Unexpected response from server" });
-          }
-        }}
-      >
-        {({ isSubmitting }) => (
-          <Form>
-            <InputField
-              name="usernameOrEmail"
-              placeholder="username or email"
-              label="Username or Email"
-            />
-            <Box mt="4">
+          }}
+        >
+          {({ isSubmitting }) => (
+            <Form>
               <InputField
-                name="password"
-                placeholder="password"
-                label="Password"
-                type={passwordShown ? "text" : "password"}
-                chakraProps={{ pr: "1.5rem" }}
+                name="usernameOrEmail"
+                placeholder="Username or Email"
+              />
+              <Box mt="4">
+                <InputField
+                  name="password"
+                  placeholder="Password"
+                  type={passwordShown ? "text" : "password"}
+                  chakraProps={{ pr: "1.5rem" }}
+                >
+                  <InputRightElement width="1.5rem">
+                    <IconButton
+                      aria-label={
+                        passwordShown ? "Hide password" : "Show password"
+                      }
+                      icon={passwordShown ? <ViewOffIcon /> : <ViewIcon />}
+                      h="1.75rem"
+                      size="xs"
+                      onClick={() => setPasswordShown((v) => !v)}
+                    />
+                  </InputRightElement>
+                </InputField>
+              </Box>
+              <Button
+                bg="brand.100"
+                isLoading={isSubmitting}
+                my="4"
+                width="100%"
+                type="submit"
               >
-                <InputRightElement width="1.5rem">
-                  <IconButton
-                    aria-label={
-                      passwordShown ? "Hide password" : "Show password"
-                    }
-                    icon={passwordShown ? <ViewOffIcon /> : <ViewIcon />}
-                    h="1.75rem"
-                    size="xs"
-                    onClick={() => setPasswordShown((v) => !v)}
-                  />
-                </InputRightElement>
-              </InputField>
-            </Box>
-            <Button
-              colorScheme="blue"
-              isLoading={isSubmitting}
-              mt="4"
-              width="100%"
-              type="submit"
-            >
-              Login
+                Login
+              </Button>
+            </Form>
+          )}
+        </Formik>
+        <Text align="center">
+          Don't have an account?{" "}
+          <NextLink href="/register" passHref>
+            <Button color="brand.100" variant="link">
+              Register
             </Button>
-          </Form>
-        )}
-      </Formik>
-    </Wrapper>
+          </NextLink>
+        </Text>
+      </Box>
+    </>
   );
 };
 
