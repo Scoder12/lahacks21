@@ -55,7 +55,7 @@ export const Index: FC<IndexProps> = ({}: IndexProps) => {
           <CheckItem>Make the world a better place</CheckItem>
         </List>
         <Flex mt={5}>
-          <NextLink href="/register" passHref>
+          <NextLink href="/profile" passHref>
             <Button colorScheme="purple">Get Started</Button>
           </NextLink>
         </Flex>
