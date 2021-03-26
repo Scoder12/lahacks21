@@ -22,9 +22,8 @@ function CreateProject() {
   const [{ data: categoryData, fetching }] = useCategoriesQuery();
   const [, createProject] = useCreateProjectMutation();
 
-  // TODO: Show "Login" header here and add a link to register
   return (
-    <Wrapper small={true}>
+    <Wrapper>
       <Formik
         initialValues={{ title: "", text: "", categoryId: -1, tags: "" }}
         onSubmit={async (stringValues, { setErrors }) => {

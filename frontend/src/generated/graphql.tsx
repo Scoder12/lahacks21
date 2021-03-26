@@ -12,8 +12,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
-  DateTime: any;
+  /** The javascript `Date` as integer. Type represents date and time as number of milliseconds from start of UNIX epoch. */
+  Timestamp: any;
 };
 
 export type Query = {
@@ -21,6 +21,7 @@ export type Query = {
   categories: Array<Category>;
   categoryById?: Maybe<Category>;
   hello: Scalars['String'];
+  projects: Array<Project>;
   me?: Maybe<User>;
   isAdmin: Scalars['Boolean'];
 };
@@ -28,6 +29,13 @@ export type Query = {
 
 export type QueryCategoryByIdArgs = {
   id: Scalars['Float'];
+};
+
+
+export type QueryProjectsArgs = {
+  cursor?: Maybe<Scalars['String']>;
+  limit: Scalars['Float'];
+  category?: Maybe<Scalars['Int']>;
 };
 
 export type Category = {
@@ -45,10 +53,17 @@ export type Project = {
   authorId: Scalars['Float'];
   categoryId: Scalars['Float'];
   tags: Scalars['String'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
+  createdAt: Scalars['Timestamp'];
+  updatedAt: Scalars['Timestamp'];
+  snippet: SnippetResponse;
 };
 
+
+export type SnippetResponse = {
+  __typename?: 'SnippetResponse';
+  content: Scalars['String'];
+  isTrimmed: Scalars['Boolean'];
+};
 
 export type User = {
   __typename?: 'User';
@@ -56,8 +71,8 @@ export type User = {
   username: Scalars['String'];
   email: Scalars['String'];
   projects: Array<Project>;
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
+  createdAt: Scalars['Timestamp'];
+  updatedAt: Scalars['Timestamp'];
 };
 
 export type Mutation = {
@@ -224,6 +239,25 @@ export type MeQuery = (
   )> }
 );
 
+export type ProjectsQueryVariables = Exact<{
+  categoryId?: Maybe<Scalars['Int']>;
+  limit: Scalars['Float'];
+  cursor?: Maybe<Scalars['String']>;
+}>;
+
+
+export type ProjectsQuery = (
+  { __typename?: 'Query' }
+  & { projects: Array<(
+    { __typename?: 'Project' }
+    & Pick<Project, 'id' | 'createdAt' | 'title' | 'categoryId'>
+    & { snippet: (
+      { __typename?: 'SnippetResponse' }
+      & Pick<SnippetResponse, 'content' | 'isTrimmed'>
+    ) }
+  )> }
+);
+
 export const UserFragmentFragmentDoc = gql`
     fragment UserFragment on User {
   id
@@ -314,4 +348,22 @@ export const MeDocument = gql`
 
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
+};
+export const ProjectsDocument = gql`
+    query Projects($categoryId: Int, $limit: Float!, $cursor: String) {
+  projects(category: $categoryId, limit: $limit, cursor: $cursor) {
+    id
+    createdAt
+    title
+    snippet {
+      content
+      isTrimmed
+    }
+    categoryId
+  }
+}
+    `;
+
+export function useProjectsQuery(options: Omit<Urql.UseQueryArgs<ProjectsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ProjectsQuery>({ query: ProjectsDocument, ...options });
 };
