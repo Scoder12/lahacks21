@@ -1,4 +1,9 @@
 import {
+  MAX_CONTENT_LENGTH,
+  MAX_TITLE_LENGTH,
+  SNIPPET_LENGTH,
+} from "src/constants";
+import {
   Arg,
   Ctx,
   Field,
@@ -55,11 +60,9 @@ export class SnippetResponse {
 export class ProjectResolver {
   @FieldResolver()
   snippet(@Root() root: Project): SnippetResponse {
-    const SNIPPET_TRIM_AMOUNT = 50;
-
     return {
-      content: root.text.slice(0, SNIPPET_TRIM_AMOUNT),
-      isTrimmed: root.text.length > SNIPPET_TRIM_AMOUNT,
+      content: root.text.slice(0, SNIPPET_LENGTH),
+      isTrimmed: root.text.length > SNIPPET_LENGTH,
     };
   }
 
@@ -79,6 +82,28 @@ export class ProjectResolver {
           },
         ],
       };
+
+    if (title.length > MAX_TITLE_LENGTH) {
+      return {
+        errors: [
+          {
+            field: "title",
+            message: `Title should be at most ${MAX_TITLE_LENGTH} characters`,
+          },
+        ],
+      };
+    }
+
+    if (text.length > MAX_CONTENT_LENGTH) {
+      return {
+        errors: [
+          {
+            field: "title",
+            message: `Title should be at most ${MAX_CONTENT_LENGTH} characters`,
+          },
+        ],
+      };
+    }
 
     return {
       project: await Project.create({
