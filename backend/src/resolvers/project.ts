@@ -1,9 +1,4 @@
 import {
-  MAX_CONTENT_LENGTH,
-  MAX_TITLE_LENGTH,
-  SNIPPET_LENGTH,
-} from "src/constants";
-import {
   Arg,
   Ctx,
   Field,
@@ -18,6 +13,11 @@ import {
   UseMiddleware,
 } from "type-graphql";
 import { getConnection } from "typeorm";
+import {
+  MAX_CONTENT_LENGTH,
+  MAX_TITLE_LENGTH,
+  SNIPPET_LENGTH,
+} from "../constants";
 import { Project } from "../entities/Project";
 import { authed } from "../middlewares/authed";
 import { ResolverContext } from "../types/context";
@@ -33,9 +33,6 @@ export class ProjectInput {
 
   @Field()
   categoryId: number;
-
-  @Field()
-  tags: string;
 }
 
 @ObjectType()
@@ -69,20 +66,9 @@ export class ProjectResolver {
   @Mutation(() => ProjectResponse)
   @UseMiddleware(authed)
   async createProject(
-    @Arg("input") { title, text, categoryId, tags }: ProjectInput,
+    @Arg("input") { title, text, categoryId }: ProjectInput,
     @Ctx() { req }: ResolverContext
   ): Promise<ProjectResponse> {
-    if (!/^[a-zA-Z0-9.,]+$/g.test(tags))
-      return {
-        errors: [
-          {
-            field: "tags",
-            message:
-              "Tags should be a comma-separated list of alphanumeric tags",
-          },
-        ],
-      };
-
     if (title.length > MAX_TITLE_LENGTH) {
       return {
         errors: [
@@ -111,7 +97,6 @@ export class ProjectResolver {
         text,
         categoryId, //category.id,
         authorId: req.session.userId,
-        tags,
       }).save(),
     };
   }

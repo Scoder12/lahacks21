@@ -3,10 +3,9 @@ import { Form, Formik } from "formik";
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React from "react";
-import InputField, {
-  SelectField,
-  TextareaField,
-} from "src/components/InputField";
+import InputField from "src/components/InputField";
+import SelectField from "src/components/SelectField";
+import TextareaField from "src/components/TextareaField";
 import Wrapper from "src/components/Wrapper";
 import {
   useCategoriesQuery,
@@ -25,7 +24,7 @@ function CreateProject() {
   return (
     <Wrapper>
       <Formik
-        initialValues={{ title: "", text: "", categoryId: -1, tags: "" }}
+        initialValues={{ title: "", text: "", categoryId: -1 }}
         onSubmit={async (stringValues, { setErrors }) => {
           // categoryId should be a number
           const categoryId = Number(stringValues.categoryId);
@@ -71,11 +70,6 @@ function CreateProject() {
             ) : (
               <Text>Categories Loading...</Text>
             )}
-            <InputField
-              label="Tags, separated by commas"
-              name="tags"
-              placeholder="frontend,react,next.js"
-            />
             <Button
               colorScheme="blue"
               isLoading={isSubmitting}

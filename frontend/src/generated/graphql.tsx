@@ -52,7 +52,6 @@ export type Project = {
   text: Scalars['String'];
   authorId: Scalars['Float'];
   categoryId: Scalars['Float'];
-  tags: Scalars['String'];
   createdAt: Scalars['Timestamp'];
   updatedAt: Scalars['Timestamp'];
   snippet: SnippetResponse;
@@ -128,7 +127,6 @@ export type ProjectInput = {
   title: Scalars['String'];
   text: Scalars['String'];
   categoryId: Scalars['Float'];
-  tags: Scalars['String'];
 };
 
 export type UserResponse = {
@@ -152,7 +150,6 @@ export type CreateProjectMutationVariables = Exact<{
   title: Scalars['String'];
   text: Scalars['String'];
   categoryId: Scalars['Float'];
-  tags: Scalars['String'];
 }>;
 
 
@@ -265,10 +262,8 @@ export const UserFragmentFragmentDoc = gql`
 }
     `;
 export const CreateProjectDocument = gql`
-    mutation createProject($title: String!, $text: String!, $categoryId: Float!, $tags: String!) {
-  createProject(
-    input: {title: $title, text: $text, categoryId: $categoryId, tags: $tags}
-  ) {
+    mutation createProject($title: String!, $text: String!, $categoryId: Float!) {
+  createProject(input: {title: $title, text: $text, categoryId: $categoryId}) {
     errors {
       field
       message

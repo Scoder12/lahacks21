@@ -2,35 +2,34 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Input,
   InputGroup,
-  InputProps,
+  Textarea,
+  TextareaProps,
 } from "@chakra-ui/react";
 import { useField } from "formik";
-import React, { FC, InputHTMLAttributes, PropsWithChildren } from "react";
+import React, { FC, PropsWithChildren, TextareaHTMLAttributes } from "react";
 
-export type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
+export type TextareaFieldProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   name: string;
   label: string;
   textarea?: boolean;
-  chakraProps?: InputProps;
+  chakraProps?: TextareaProps;
 };
 
-export const InputField: FC<InputFieldProps> = ({
+export const TextareaField: FC<TextareaFieldProps> = ({
   label,
   children,
   textarea,
-  size: _,
   chakraProps = {},
   ...props
-}: PropsWithChildren<InputFieldProps>) => {
+}: PropsWithChildren<TextareaFieldProps>) => {
   const [field, { error }] = useField(props);
 
   return (
     <FormControl isInvalid={!!error}>
       <FormLabel htmlFor={field.name}>{label}</FormLabel>
       <InputGroup size="md">
-        <Input {...field} {...props} {...chakraProps} id={field.name} />
+        <Textarea {...field} {...props} {...chakraProps} id={field.name} />
         {children}
       </InputGroup>
       {error ? <FormErrorMessage>{error}</FormErrorMessage> : null}
@@ -38,4 +37,4 @@ export const InputField: FC<InputFieldProps> = ({
   );
 };
 
-export default InputField;
+export default TextareaField;
