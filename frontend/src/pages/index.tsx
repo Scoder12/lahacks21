@@ -13,11 +13,12 @@ import {
 import { withUrqlClient } from "next-urql";
 import NextLink from "next/link";
 import { FC, PropsWithChildren } from "react";
+import NavBar from "src/components/NavBar";
 import { createUrqlClient } from "src/utils/createUrqlClient";
 
 function CheckItem({ children }: PropsWithChildren<{}>) {
   return (
-    <ListItem>
+    <ListItem fontSize="lg" fontWeight="bold">
       <ListIcon as={CheckIcon} />
       {children}
     </ListItem>
@@ -30,36 +31,43 @@ export const Index: FC<IndexProps> = ({}: IndexProps) => {
   return (
     <>
       {/* Navbar */}
-      <Flex justify="space-between">
-        <Flex align="center">
-          <Image src={"/logo.svg"} alt="Innopact Logo" height="5em" />
-          <Box fontSize="20pt">Innopact</Box>
-        </Flex>
-        <Flex align="center">
-          <NextLink href="/login" passHref>
-            <Button as="a" colorScheme="gray" mr={2} px={20}>
-              Login
-            </Button>
-          </NextLink>
+      <NavBar />
+      {/* Hero */}
+      <Flex flexDirection="column">
+        <Flex flex={1} flexDirection="column" justifyContent="space-around">
+          <Box w="80%" mt={20} mx="auto" bg="brand.300" p={10} rounded="lg">
+            <Heading size="2xl" fontWeight="light" mb={3}>
+              Inspire. Innovate. Impact.
+            </Heading>
+            <Text mt={5} mb={2}>
+              Join our platform to
+            </Text>
+            <List>
+              <CheckItem>Expand your skillset</CheckItem>
+              <CheckItem>Build your network</CheckItem>
+              <CheckItem>Make the world a better place</CheckItem>
+            </List>
+            <Flex mt={7}>
+              <NextLink href="/register" passHref>
+                <Button w={110} bg="brand.100" _hover={{ bg: "brand.300" }}>
+                  Get Started
+                </Button>
+              </NextLink>
+              <NextLink href="/about" passHref>
+                <Button
+                  w={110}
+                  ml={5}
+                  bg="brand.400"
+                  color="brand.300"
+                  _hover={{ bg: "brand.300", color: "brand.400" }}
+                >
+                  Learn More
+                </Button>
+              </NextLink>
+            </Flex>
+          </Box>
         </Flex>
       </Flex>
-      {/* Hero */}
-      <Box ml={[0, "5em"]}>
-        <Heading size="xl" mb={3}>
-          Inspire. Innovate. Impact.
-        </Heading>
-        <Text mb={2}>Join our platform to</Text>
-        <List>
-          <CheckItem>Expand your skillset</CheckItem>
-          <CheckItem>Build your network</CheckItem>
-          <CheckItem>Make the world a better place</CheckItem>
-        </List>
-        <Flex mt={5}>
-          <NextLink href="/register" passHref>
-            <Button colorScheme="purple">Get Started</Button>
-          </NextLink>
-        </Flex>
-      </Box>
     </>
   );
 };
