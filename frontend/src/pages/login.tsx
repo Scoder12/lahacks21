@@ -2,20 +2,17 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
-  Center,
-  Flex,
   IconButton,
   InputRightElement,
   Text,
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { withUrqlClient } from "next-urql";
-import { useRouter } from "next/router";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 import { FC, useState } from "react";
 import InputField from "src/components/InputField";
 import NavBar from "src/components/NavBar";
-import Wrapper from "src/components/Wrapper";
 import { useLoginMutation } from "src/generated/graphql";
 import { createUrqlClient } from "src/utils/createUrqlClient";
 import { toErrorMap } from "src/utils/toErrorMap";
@@ -56,11 +53,13 @@ export const Login: FC<LoginProps> = ({}: LoginProps) => {
           {({ isSubmitting }) => (
             <Form>
               <InputField
+                label="Username or email"
                 name="usernameOrEmail"
                 placeholder="Username or Email"
               />
               <Box mt="4">
                 <InputField
+                  label="Password"
                   name="password"
                   placeholder="Password"
                   type={passwordShown ? "text" : "password"}
