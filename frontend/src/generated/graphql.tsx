@@ -22,6 +22,7 @@ export type Query = {
   categoryById?: Maybe<Category>;
   hello: Scalars['String'];
   projects: PaginatedProjects;
+  project?: Maybe<Project>;
   me?: Maybe<User>;
   isAdmin: Scalars['Boolean'];
 };
@@ -34,8 +35,13 @@ export type QueryCategoryByIdArgs = {
 
 export type QueryProjectsArgs = {
   cursor?: Maybe<Scalars['String']>;
-  limit: Scalars['Float'];
+  limit: Scalars['Int'];
   category?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryProjectArgs = {
+  id: Scalars['Int'];
 };
 
 export type Category = {
@@ -51,10 +57,21 @@ export type Project = {
   title: Scalars['String'];
   text: Scalars['String'];
   authorId: Scalars['Float'];
+  author: User;
   categoryId: Scalars['Float'];
   createdAt: Scalars['Timestamp'];
   updatedAt: Scalars['Timestamp'];
   snippet: SnippetResponse;
+};
+
+export type User = {
+  __typename?: 'User';
+  id: Scalars['Float'];
+  username: Scalars['String'];
+  email: Scalars['String'];
+  projects: Array<Project>;
+  createdAt: Scalars['Timestamp'];
+  updatedAt: Scalars['Timestamp'];
 };
 
 
@@ -68,16 +85,6 @@ export type PaginatedProjects = {
   __typename?: 'PaginatedProjects';
   projects: Array<Project>;
   hasMore: Scalars['Boolean'];
-};
-
-export type User = {
-  __typename?: 'User';
-  id: Scalars['Float'];
-  username: Scalars['String'];
-  email: Scalars['String'];
-  projects: Array<Project>;
-  createdAt: Scalars['Timestamp'];
-  updatedAt: Scalars['Timestamp'];
 };
 
 export type Mutation = {
@@ -242,9 +249,22 @@ export type MeQuery = (
   )> }
 );
 
+export type ProjectQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type ProjectQuery = (
+  { __typename?: 'Query' }
+  & { project?: Maybe<(
+    { __typename?: 'Project' }
+    & Pick<Project, 'id' | 'createdAt' | 'title' | 'text' | 'categoryId'>
+  )> }
+);
+
 export type ProjectsQueryVariables = Exact<{
   categoryId?: Maybe<Scalars['Int']>;
-  limit: Scalars['Float'];
+  limit: Scalars['Int'];
   cursor?: Maybe<Scalars['String']>;
 }>;
 
@@ -354,8 +374,23 @@ export const MeDocument = gql`
 export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<MeQuery>({ query: MeDocument, ...options });
 };
+export const ProjectDocument = gql`
+    query Project($id: Int!) {
+  project(id: $id) {
+    id
+    createdAt
+    title
+    text
+    categoryId
+  }
+}
+    `;
+
+export function useProjectQuery(options: Omit<Urql.UseQueryArgs<ProjectQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<ProjectQuery>({ query: ProjectDocument, ...options });
+};
 export const ProjectsDocument = gql`
-    query Projects($categoryId: Int, $limit: Float!, $cursor: String) {
+    query Projects($categoryId: Int, $limit: Int!, $cursor: String) {
   projects(category: $categoryId, limit: $limit, cursor: $cursor) {
     hasMore
     projects {

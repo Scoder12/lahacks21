@@ -1,4 +1,4 @@
-query Projects($categoryId: Int, $limit: Float!, $cursor: String) {
+query Projects($categoryId: Int, $limit: Int!, $cursor: String) {
   projects(category: $categoryId, limit: $limit, cursor: $cursor) {
     hasMore
     projects {

@@ -113,7 +113,7 @@ export class ProjectResolver {
   @Query(() => PaginatedProjects)
   async projects(
     @Arg("category", () => Int, { nullable: true }) category: number | null,
-    @Arg("limit") limit: number,
+    @Arg("limit", () => Int) limit: number,
     // cursor is too big to be an Int, so accept a string and parseInt it
     @Arg("cursor", () => String, { nullable: true }) cursor: string | null
   ): Promise<PaginatedProjects> {
@@ -146,5 +146,10 @@ export class ProjectResolver {
       projects: projects.slice(0, realLimit),
       hasMore: projects.length == realLimitPlusOne,
     };
+  }
+
+  @Query(() => Project, { nullable: true })
+  project(@Arg("id", () => Int) id: number): Promise<Project | undefined> {
+    return Project.findOne(id, { relations: ["author"] });
   }
 }

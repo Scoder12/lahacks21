@@ -1,27 +1,13 @@
 import { Button } from "@chakra-ui/button";
 import { Box, Flex, Heading, Link, Stack, Text } from "@chakra-ui/layout";
-import { Skeleton } from "@chakra-ui/skeleton";
 import { withUrqlClient } from "next-urql";
 import NextLink from "next/link";
-import { FC, useState } from "react";
+import { useState } from "react";
 import NavBar from "src/components/NavBar";
+import Skeletons from "src/components/Skeletons";
 import Wrapper from "src/components/Wrapper";
 import { useProjectsQuery } from "src/generated/graphql";
 import { createUrqlClient } from "src/utils/createUrqlClient";
-
-interface SkeletonsProps {
-  count?: number;
-}
-
-const Skeletons: FC<SkeletonsProps> = ({ count = 3 }: SkeletonsProps) => {
-  return (
-    <>
-      {[...Array(count)].map((_, i) => (
-        <Skeleton key={i} />
-      ))}
-    </>
-  );
-};
 
 function LatestProjects() {
   const [cursor, setCursor] = useState<string | null>(null);
