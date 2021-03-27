@@ -37,9 +37,11 @@ function CreateProject() {
             const values = { ...stringValues, categoryId };
             console.log(values);
 
-            const { data } = await createProject(values);
+            const { data, error } = await createProject(values);
             if (data?.createProject.errors) {
               setErrors(toErrorMap(data.createProject.errors));
+            } else if (error) {
+              setErrors({ title: error.message });
             } else {
               router.push("/projects");
             }
