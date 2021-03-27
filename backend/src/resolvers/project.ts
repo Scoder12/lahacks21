@@ -100,13 +100,29 @@ export class ProjectResolver {
       };
     }
 
-    return {
-      project: await Project.create({
+    let project;
+    try {
+      project = await Project.create({
         title,
         text,
         categoryId, //category.id,
         authorId: req.session.userId,
-      }).save(),
+      }).save();
+    } catch (e) {
+      if (
+        e &&
+        e.code === "23503" &&
+        /^Key \(categoryId\)=\([-]?(\d+)\) is not present in table "category"\.$/gm.test(
+          e.detail
+        )
+      ) {
+        throw new Error("Invalid category");
+      }
+      throw e;
+    }
+
+    return {
+      project,
     };
   }
 
