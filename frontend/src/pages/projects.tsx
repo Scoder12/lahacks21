@@ -35,7 +35,7 @@ function LatestProjects() {
             </Text>
             {/* TODO: Add large post viewing page */}
             {i.snippet.isTrimmed ? (
-              <Link ml={2} color="teal.500" href="#">
+              <Link ml={2} href="#">
                 Read more
               </Link>
             ) : null}

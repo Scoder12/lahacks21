@@ -1,8 +1,8 @@
-import { Box, Heading, Link, Text } from "@chakra-ui/react";
+import { Heading, Text } from "@chakra-ui/react";
 import { withUrqlClient } from "next-urql";
-import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { FC } from "react";
+import Markdown from "src/components/Markdown";
 import Skeletons from "src/components/Skeletons";
 import Wrapper from "src/components/Wrapper";
 import { useProjectQuery } from "src/generated/graphql";
@@ -42,23 +42,12 @@ const ProjectPage: FC<{}> = () => {
     inner = (
       <>
         <Heading mb={3}>{data.project.title}</Heading>
-        <Text>{data.project.text}</Text>
+        <Markdown>{data.project.text}</Markdown>
       </>
     );
   }
 
-  return (
-    <Wrapper>
-      {inner}
-      <Box mt={3}>
-        <NextLink href="/projects" passHref>
-          <Link color="teal.500" href="#">
-            See all projects
-          </Link>
-        </NextLink>
-      </Box>
-    </Wrapper>
-  );
+  return <Wrapper>{inner}</Wrapper>;
 };
 
 export default withUrqlClient(createUrqlClient, { ssr: true })(ProjectPage);

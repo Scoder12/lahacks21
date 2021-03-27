@@ -4,8 +4,8 @@ import {
   extendTheme,
 } from "@chakra-ui/react";
 import { AppProps } from "next/dist/next-server/lib/router/router";
+import "../styles/sample_project.css";
 import "../styles/style.css";
-import "../styles/sample_project.css"
 
 const theme = extendTheme({
   colors: {
@@ -15,6 +15,10 @@ const theme = extendTheme({
       300: "#333",
       400: "#eee",
     },
+  },
+  components: {
+    // kinda hacky
+    Link: { baseStyle: { color: "teal.500" } },
   },
 });
 
