@@ -4,8 +4,8 @@ import {
   extendTheme,
 } from "@chakra-ui/react";
 import { AppProps } from "next/dist/next-server/lib/router/router";
-import "../styles/style.css";
 import "../styles/sample_project.css";
+import "../styles/style.css";
 
 const theme = extendTheme({
   colors: {
@@ -36,7 +36,7 @@ const theme = extendTheme({
       },
       variants: {
         primary: {
-          bg: "#a24cc4",
+          bg: "brand.100",
         },
         secondary: {
           bg: "transparent",
@@ -56,6 +56,8 @@ const theme = extendTheme({
         },
       },
     },
+    // kinda hacky
+    Link: { baseStyle: { color: "brand.100", _hover: { color: "brand.100" } } },
   },
 });
 

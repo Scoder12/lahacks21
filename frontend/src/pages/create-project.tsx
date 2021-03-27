@@ -31,8 +31,9 @@ function CreateProject() {
           onSubmit={async (stringValues, { setErrors }) => {
             // categoryId should be a number
             const categoryId = Number(stringValues.categoryId);
-            if (isNaN(categoryId)) {
+            if (isNaN(categoryId) || categoryId == -1) {
               setErrors({ categoryId: "Invalid category" });
+              return;
             }
             const values = { ...stringValues, categoryId };
             console.log(values);
@@ -66,6 +67,7 @@ function CreateProject() {
                   label="Category"
                   chakraProps={{ mb: "2" }}
                 >
+                  <option value={-1}>Select a category</option>
                   {categoryData.categories.map((i) => (
                     <option key={i.id} value={i.id}>
                       {i.name}

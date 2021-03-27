@@ -73,7 +73,12 @@ export const NavBar: FC<NavBarProps> = ({}: NavBarProps) => {
     // User is logged in
     body = (
       <>
-        <Flex mr="1vw" alignItems="center" onClick={handleProfileClick}>
+        <Flex
+          mr="1vw"
+          alignItems="center"
+          _hover={{ cursor: "pointer" }}
+          onClick={handleProfileClick}
+        >
           <Image
             src="https://upload.wikimedia.org/wikipedia/commons/9/94/Robert_Downey_Jr_2014_Comic_Con_%28cropped%29.jpg"
             alt="Profile"
