@@ -93,8 +93,8 @@ export class ProjectResolver {
       return {
         errors: [
           {
-            field: "title",
-            message: `Title should be at most ${MAX_CONTENT_LENGTH} characters`,
+            field: "text",
+            message: `Content should be at most ${MAX_CONTENT_LENGTH} characters`,
           },
         ],
       };
