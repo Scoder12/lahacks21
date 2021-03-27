@@ -4,7 +4,6 @@ import {
   Button,
   Flex,
   Heading,
-  Image,
   List,
   ListIcon,
   ListItem,
@@ -30,9 +29,7 @@ export interface IndexProps {}
 export const Index: FC<IndexProps> = ({}: IndexProps) => {
   return (
     <>
-      {/* Navbar */}
       <NavBar />
-      {/* Hero */}
       <Flex flexDirection="column">
         <Flex flex={1} flexDirection="column" justifyContent="space-around">
           <Box w="80%" mt={20} mx="auto" bg="brand.300" p={10} rounded="lg">

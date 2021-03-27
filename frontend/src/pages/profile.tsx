@@ -1,100 +1,114 @@
-import React, { useRef, useState } from "react";
-// import Avatar from "../assets/avatar.png";
+import { Button } from "@chakra-ui/button";
+import { Image } from "@chakra-ui/image";
+import { InputProps } from "@chakra-ui/input";
+import { Box, Flex, Grid, Text } from "@chakra-ui/layout";
+import { Form, Formik } from "formik";
+import React, { InputHTMLAttributes } from "react";
+import InputField from "src/components/InputField";
+import NavBar from "src/components/NavBar";
+import { useRequireLogin } from "src/utils/useRequireLogin";
+
+export type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
+  name: string;
+  label?: string;
+  textarea?: boolean;
+  chakraProps?: InputProps;
+};
 
 const Profile = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [university, setUniversity] = useState("");
-  const [degree, setDegree] = useState("");
-  const [occupation, setOccupation] = useState("");
-  const [country, setCountry] = useState("");
-  const [skills, setSkills] = useState("");
-  const [profileLink, setProfileLink] = useState("");
-  const [profileImg, setProfileImg] = useState<File | undefined | null>();
+  useRequireLogin();
 
-  const inputImg = useRef<HTMLInputElement>(null);
-
-  const handleInputImgClick = () => {
-    if (!inputImg.current) return;
-    inputImg.current.click();
-  };
-
-  const handleProfileImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const fileList = e.target.files;
-    if (!fileList) return;
-    setProfileImg(fileList[0]);
+  const handleSubmit = async (values: any, { setErrors }: any) => {
+    console.log(values);
   };
 
   return (
-    <div className="profile">
-      <h2 className="header">Customize your profile</h2>
-      <form>
-        <div className="all-inputs-cont">
-          <div className="inputs-cont">
-            <div className="small-inputs-cont">
-              <input
-                placeholder="First"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-              />
-              <input
-                placeholder="Last"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-              />
-              <input
-                placeholder="University"
-                value={university}
-                onChange={(e) => setUniversity(e.target.value)}
-              />
-              <input
-                placeholder="Degree"
-                value={degree}
-                onChange={(e) => setDegree(e.target.value)}
-              />
-              <input
-                placeholder="Occupation"
-                value={occupation}
-                onChange={(e) => setOccupation(e.target.value)}
-              />
-            </div>
-            <input
-              placeholder="Country"
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-            />
-            <input
-              placeholder="Skills"
-              value={skills}
-              onChange={(e) => setSkills(e.target.value)}
-            />
-            <input
-              placeholder="Profile URL"
-              value={profileLink}
-              onChange={(e) => setProfileLink(e.target.value)}
-            />
-          </div>
-          <div style={{ flex: 1 }}>
-            <div className="input-img-cont" onClick={handleInputImgClick}>
-              <div className="img-bg">
-                <img className="profile-img" src={"/user.svg"} alt="Profile" />
-              </div>
-              <p className="upload-img">Upload Photo</p>
-            </div>
-            <input
-              className="input-img"
-              ref={inputImg}
-              type="file"
-              multiple={false}
-              onChange={handleProfileImgChange}
-            />
-          </div>
-        </div>
-        <button className="submit-btn" type="submit">
-          Confirm
-        </button>
-      </form>
-    </div>
+    <>
+      <NavBar />
+      <Box w="800px" maxW="90%" m="auto" mt="10%">
+        <Text mb={4} fontSize="3xl" fontWeight="bold" align="center">
+          Customize Your Profile
+        </Text>
+        <Formik
+          initialValues={{ email: "", username: "", password: "" }}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting }) => (
+            <Form>
+              <Flex>
+                <Flex flex={2} flexDirection="column">
+                  <Grid templateColumns="repeat(2, 1fr)" gap="0 10px">
+                    <InputField
+                      type="text"
+                      name="firstName"
+                      placeholder="First Name"
+                    />
+                    <InputField
+                      type="text"
+                      name="lastName"
+                      placeholder="Last Name"
+                    />
+                    <InputField
+                      type="text"
+                      name="university"
+                      placeholder="University"
+                    />
+                    <InputField
+                      type="text"
+                      name="degree"
+                      placeholder="Degree"
+                    />
+                    <InputField
+                      type="text"
+                      name="Occupation"
+                      placeholder="Occupation"
+                    />
+                  </Grid>
+                  <InputField
+                    type="text"
+                    name="country"
+                    placeholder="Country"
+                  />
+                  <InputField type="text" name="skills" placeholder="Skills" />
+                  <InputField
+                    type="text"
+                    name="profileLink"
+                    placeholder="Profile Link"
+                  />
+                </Flex>
+                <Flex
+                  flex={1}
+                  flexDirection="column"
+                  justifyContent="space-between"
+                  rounded="20px"
+                  m="0 20px"
+                >
+                  <Box w="70%" m="auto" rounded="50%" bg="brand.100" p="10px">
+                    <Image src="/user.svg" alt="Profile" />
+                  </Box>
+                  <InputField
+                    type="url"
+                    name="profileImgUrl"
+                    placeholder="Prophile Photo URL"
+                  />
+                </Flex>
+              </Flex>
+              <Button
+                bg="brand.100"
+                isLoading={isSubmitting}
+                my="4"
+                display="block"
+                margin="1rem auto"
+                width={110}
+                type="submit"
+              >
+                Confirm
+              </Button>
+            </Form>
+          )}
+        </Formik>
+      </Box>
+    </>
   );
 };
 

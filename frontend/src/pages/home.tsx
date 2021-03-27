@@ -4,6 +4,7 @@ import { Skeleton } from "@chakra-ui/skeleton";
 import { withUrqlClient } from "next-urql";
 import NextLink from "next/link";
 import { FC, useState } from "react";
+import NavBar from "src/components/NavBar";
 import Wrapper from "src/components/Wrapper";
 import { useProjectsQuery } from "src/generated/graphql";
 import { createUrqlClient } from "src/utils/createUrqlClient";
@@ -80,15 +81,18 @@ function Home() {
   useRequireLogin();
 
   return (
-    <Wrapper>
-      <Flex align="center">
-        <Heading mb={4}>Latest Projects</Heading>
-        <NextLink href="/create-project" passHref>
-          <Link ml="auto">Create a new project</Link>
-        </NextLink>
-      </Flex>
-      <LatestProjects />
-    </Wrapper>
+    <>
+      <NavBar />
+      <Wrapper>
+        <Flex align="center">
+          <Heading mb={4}>Latest Projects</Heading>
+          <NextLink href="/create-project" passHref>
+            <Link ml="auto">Create a new project</Link>
+          </NextLink>
+        </Flex>
+        <LatestProjects />
+      </Wrapper>
+    </>
   );
 }
 

@@ -11,7 +11,7 @@ import React, { FC, InputHTMLAttributes, PropsWithChildren } from "react";
 
 export type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   name: string;
-  label: string;
+  label?: string;
   textarea?: boolean;
   chakraProps?: InputProps;
 };
@@ -27,8 +27,8 @@ export const InputField: FC<InputFieldProps> = ({
   const [field, { error }] = useField(props);
 
   return (
-    <FormControl isInvalid={!!error}>
-      <FormLabel htmlFor={field.name}>{label}</FormLabel>
+    <FormControl my="5px" isInvalid={!!error}>
+      {label && <FormLabel htmlFor={field.name}>{label}</FormLabel>}
       <InputGroup size="md">
         <Input {...field} {...props} {...chakraProps} id={field.name} />
         {children}

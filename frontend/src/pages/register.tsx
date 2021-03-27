@@ -14,7 +14,6 @@ import NextLink from "next/link";
 import { FC, useState } from "react";
 import InputField from "src/components/InputField";
 import NavBar from "src/components/NavBar";
-import Wrapper from "src/components/Wrapper";
 import { useRegisterMutation } from "src/generated/graphql";
 import { createUrqlClient } from "src/utils/createUrqlClient";
 import { toErrorMap } from "src/utils/toErrorMap";
@@ -26,7 +25,6 @@ export const Register: FC<RegisterProps> = ({}: RegisterProps) => {
   const [, register] = useRegisterMutation();
   const [passwordShown, setPasswordShown] = useState<boolean>(false);
 
-  // TODO: Show "Register" heading here and add a link to login
   return (
     <>
       <NavBar />

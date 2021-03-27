@@ -2,8 +2,6 @@ import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
-  Center,
-  Flex,
   IconButton,
   InputRightElement,
   Text,
@@ -15,7 +13,6 @@ import NextLink from "next/link";
 import { FC, useState } from "react";
 import InputField from "src/components/InputField";
 import NavBar from "src/components/NavBar";
-import Wrapper from "src/components/Wrapper";
 import { useLoginMutation } from "src/generated/graphql";
 import { createUrqlClient } from "src/utils/createUrqlClient";
 import { toErrorMap } from "src/utils/toErrorMap";
