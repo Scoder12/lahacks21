@@ -7,7 +7,6 @@ import { FC, useState } from "react";
 import Wrapper from "src/components/Wrapper";
 import { useProjectsQuery } from "src/generated/graphql";
 import { createUrqlClient } from "src/utils/createUrqlClient";
-import { useRequireLogin } from "src/utils/useRequireLogin";
 
 interface SkeletonsProps {
   count?: number;
@@ -77,8 +76,6 @@ function LatestProjects() {
 }
 
 function Home() {
-  useRequireLogin();
-
   return (
     <Wrapper>
       <Flex align="center">
@@ -92,4 +89,4 @@ function Home() {
   );
 }
 
-export default withUrqlClient(createUrqlClient)(Home);
+export default withUrqlClient(createUrqlClient, { ssr: true })(Home);
