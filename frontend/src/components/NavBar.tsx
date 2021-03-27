@@ -35,24 +35,12 @@ export const NavBar: FC<NavBarProps> = ({}: NavBarProps) => {
     body = (
       <Box>
         <NextLink href="/login" passHref>
-          <Button
-            as="a"
-            mr={5}
-            w={110}
-            variant="outline"
-            _hover={{ bg: "brand.300", border: "none", textDecor: "none" }}
-          >
+          <Button mr={5} w={110} variant="outline">
             Login
           </Button>
         </NextLink>
         <NextLink href="/register" passHref>
-          <Button
-            as="a"
-            bg="brand.100"
-            mr={10}
-            w={110}
-            _hover={{ bg: "brand.300", textDecor: "none" }}
-          >
+          <Button bg="brand.100" mr={10} w={110}>
             Register
           </Button>
         </NextLink>
