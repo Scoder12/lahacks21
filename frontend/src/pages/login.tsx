@@ -8,8 +8,8 @@ import {
 } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { withUrqlClient } from "next-urql";
-import { useRouter } from "next/router";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 import { FC, useState } from "react";
 import InputField from "src/components/InputField";
 import NavBar from "src/components/NavBar";
@@ -43,7 +43,7 @@ export const Login: FC<LoginProps> = ({}: LoginProps) => {
               if (typeof router.query.next === "string" && router.query.next) {
                 router.push(router.query.next);
               } else {
-                router.push("/home");
+                router.push("/projects");
               }
             } else {
               setErrors({ usernameOrEmail: "Unexpected response from server" });
@@ -53,11 +53,13 @@ export const Login: FC<LoginProps> = ({}: LoginProps) => {
           {({ isSubmitting }) => (
             <Form>
               <InputField
+                label="Username or email"
                 name="usernameOrEmail"
                 placeholder="Username or Email"
               />
               <Box mt="4">
                 <InputField
+                  label="Password"
                   name="password"
                   placeholder="Password"
                   type={passwordShown ? "text" : "password"}

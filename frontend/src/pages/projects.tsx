@@ -8,7 +8,6 @@ import NavBar from "src/components/NavBar";
 import Wrapper from "src/components/Wrapper";
 import { useProjectsQuery } from "src/generated/graphql";
 import { createUrqlClient } from "src/utils/createUrqlClient";
-import { useRequireLogin } from "src/utils/useRequireLogin";
 
 interface SkeletonsProps {
   count?: number;
@@ -27,7 +26,7 @@ const Skeletons: FC<SkeletonsProps> = ({ count = 3 }: SkeletonsProps) => {
 function LatestProjects() {
   const [cursor, setCursor] = useState<string | null>(null);
   const [{ data, fetching }] = useProjectsQuery({
-    variables: { limit: 1, cursor },
+    variables: { limit: 10, cursor },
   });
   console.log(data);
 
@@ -77,9 +76,7 @@ function LatestProjects() {
   );
 }
 
-function Home() {
-  useRequireLogin();
-
+function ProjectsPage() {
   return (
     <>
       <NavBar />
@@ -96,4 +93,4 @@ function Home() {
   );
 }
 
-export default withUrqlClient(createUrqlClient)(Home);
+export default withUrqlClient(createUrqlClient, { ssr: true })(ProjectsPage);
