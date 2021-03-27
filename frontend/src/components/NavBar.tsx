@@ -40,7 +40,7 @@ export const NavBar: FC<NavBarProps> = ({}: NavBarProps) => {
             mr={5}
             w={110}
             variant="outline"
-            _hover={{ bg: "brand.300", border: "none" }}
+            _hover={{ bg: "brand.300", border: "none", textDecor: "none" }}
           >
             Login
           </Button>
@@ -51,7 +51,7 @@ export const NavBar: FC<NavBarProps> = ({}: NavBarProps) => {
             bg="brand.100"
             mr={10}
             w={110}
-            _hover={{ bg: "brand.300" }}
+            _hover={{ bg: "brand.300", textDecor: "none" }}
           >
             Register
           </Button>
