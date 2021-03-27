@@ -26,8 +26,9 @@ export const SelectField: FC<SelectFieldProps> = ({
   return (
     <FormControl isInvalid={!!error}>
       <FormLabel htmlFor={field.name}>{label}</FormLabel>
-      <Select {...field} {...props} {...chakraProps} id={field.name} />
-      {children}
+      <Select {...field} {...props} {...chakraProps} id={field.name}>
+        {children}
+      </Select>
       {error ? <FormErrorMessage>{error}</FormErrorMessage> : null}
     </FormControl>
   );
