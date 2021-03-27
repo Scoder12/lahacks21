@@ -4,10 +4,12 @@ import {
   Arg,
   Ctx,
   Field,
+  FieldResolver,
   Mutation,
   ObjectType,
   Query,
   Resolver,
+  Root,
   UseMiddleware,
 } from "type-graphql";
 import { COOKIE_NAME } from "../constants";
@@ -29,8 +31,18 @@ export class UserResponse {
   user?: User;
 }
 
-@Resolver()
+@Resolver(User)
 export class UserResolver {
+  @FieldResolver(() => String)
+  email(@Root() { id, email }: User, @Ctx() { req }: ResolverContext): string {
+    // User is viewing their own email
+    if (req.session.userId === id) {
+      return email;
+    }
+    // User is trying to view another user's email
+    return "";
+  }
+
   @Query(() => User, { nullable: true })
   async me(@Ctx() { req }: ResolverContext): Promise<User | undefined> {
     if (!req.session.userId) {
