@@ -43,7 +43,7 @@ export const Login: FC<LoginProps> = ({}: LoginProps) => {
               if (typeof router.query.next === "string" && router.query.next) {
                 router.push(router.query.next);
               } else {
-                router.push("/home");
+                router.push("/projects");
               }
             } else {
               setErrors({ usernameOrEmail: "Unexpected response from server" });

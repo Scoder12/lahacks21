@@ -38,7 +38,7 @@ function CreateProject() {
           if (data?.createProject.errors) {
             setErrors(toErrorMap(data.createProject.errors));
           } else {
-            router.push("/home");
+            router.push("/projects");
           }
         }}
       >

@@ -75,7 +75,7 @@ function LatestProjects() {
   );
 }
 
-function Home() {
+function ProjectsPage() {
   return (
     <Wrapper>
       <Flex align="center">
@@ -89,4 +89,4 @@ function Home() {
   );
 }
 
-export default withUrqlClient(createUrqlClient, { ssr: true })(Home);
+export default withUrqlClient(createUrqlClient, { ssr: true })(ProjectsPage);
