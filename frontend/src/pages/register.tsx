@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   IconButton,
+  Image,
   InputRightElement,
   Text,
 } from "@chakra-ui/react";
@@ -27,9 +28,17 @@ export const Register: FC<RegisterProps> = ({}: RegisterProps) => {
 
   return (
     <>
-      <NavBar />
-      <Box w="500px" m="auto" mt="10%">
-        <Text mb={4} fontSize="3xl" fontWeight="bold" align="center">
+      <Box w="400px" m="auto" mt="5%">
+        <NextLink href="/" passHref>
+          <Image
+            src="logo.svg"
+            alt="Innopact"
+            m="auto"
+            w="7rem"
+            _hover={{ cursor: "pointer" }}
+          />
+        </NextLink>
+        <Text mb={4} fontSize="3xl" fontWeight="400" align="center">
           Join Innopact
         </Text>
         <Formik
@@ -59,14 +68,17 @@ export const Register: FC<RegisterProps> = ({}: RegisterProps) => {
                   type={passwordShown ? "text" : "password"}
                   chakraProps={{ pr: "1.5rem" }}
                 >
-                  <InputRightElement width="1.5rem">
+                  <InputRightElement width="1.75rem" mr="5px">
                     <IconButton
                       aria-label={
                         passwordShown ? "Hide password" : "Show password"
                       }
                       icon={passwordShown ? <ViewOffIcon /> : <ViewIcon />}
                       h="1.75rem"
+                      w="1.75rem"
                       size="xs"
+                      bg="brand.100"
+                      _hover={{ opacity: "0.5" }}
                       onClick={() => setPasswordShown((v) => !v)}
                     />
                   </InputRightElement>

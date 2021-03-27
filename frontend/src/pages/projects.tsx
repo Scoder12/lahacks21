@@ -67,10 +67,13 @@ function ProjectsPage() {
     <>
       <NavBar />
       <Wrapper>
+        <Text variant="h1" m="auto" align="center">
+          Latest Projects
+        </Text>
         <Flex align="center">
-          <Heading mb={4}>Latest Projects</Heading>
+          <Text>Filter</Text>
           <NextLink href="/create-project" passHref>
-            <Link ml="auto">Create a new project</Link>
+            <Link ml="auto">Create new project</Link>
           </NextLink>
         </Flex>
         <LatestProjects />

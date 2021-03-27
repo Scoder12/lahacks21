@@ -16,7 +16,7 @@ export type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 const Profile = () => {
-  useRequireLogin();
+  // useRequireLogin();
 
   const handleSubmit = async (values: any, { setErrors }: any) => {
     console.log(values);

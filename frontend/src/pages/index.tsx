@@ -46,18 +46,12 @@ export const Index: FC<IndexProps> = ({}: IndexProps) => {
             </List>
             <Flex mt={7}>
               <NextLink href="/register" passHref>
-                <Button w={110} bg="brand.100" _hover={{ bg: "brand.300" }}>
+                <Button size="sm" variant="primary" mr="1vw">
                   Get Started
                 </Button>
               </NextLink>
               <NextLink href="/about" passHref>
-                <Button
-                  w={110}
-                  ml={5}
-                  bg="brand.400"
-                  color="brand.300"
-                  _hover={{ bg: "brand.300", color: "brand.400" }}
-                >
+                <Button size="sm" variant="secondary">
                   Learn More
                 </Button>
               </NextLink>

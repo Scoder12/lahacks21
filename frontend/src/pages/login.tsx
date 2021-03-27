@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   IconButton,
+  Image,
   InputRightElement,
   Text,
 } from "@chakra-ui/react";
@@ -27,9 +28,17 @@ export const Login: FC<LoginProps> = ({}: LoginProps) => {
   // TODO: Show "Login" header here and add a link to register
   return (
     <>
-      <NavBar />
-      <Box w="500px" m="auto" mt="10%">
-        <Text mb={4} fontSize="3xl" fontWeight="bold" align="center">
+      <Box w="400px" m="auto" mt="5%">
+        <NextLink href="/" passHref>
+          <Image
+            src="logo.svg"
+            alt="Innopact"
+            m="auto"
+            w="7rem"
+            _hover={{ cursor: "pointer" }}
+          />
+        </NextLink>
+        <Text mb={4} fontSize="3xl" fontWeight="400" align="center">
           Login to Innopact
         </Text>
         <Formik
@@ -53,37 +62,38 @@ export const Login: FC<LoginProps> = ({}: LoginProps) => {
           {({ isSubmitting }) => (
             <Form>
               <InputField
-                label="Username or email"
                 name="usernameOrEmail"
                 placeholder="Username or Email"
               />
               <Box mt="4">
                 <InputField
-                  label="Password"
                   name="password"
                   placeholder="Password"
                   type={passwordShown ? "text" : "password"}
                   chakraProps={{ pr: "1.5rem" }}
                 >
-                  <InputRightElement width="1.5rem">
+                  <InputRightElement width="1.75rem" mr="5px">
                     <IconButton
                       aria-label={
                         passwordShown ? "Hide password" : "Show password"
                       }
                       icon={passwordShown ? <ViewOffIcon /> : <ViewIcon />}
                       h="1.75rem"
+                      w="1.75rem"
                       size="xs"
+                      bg="brand.100"
+                      _hover={{ opacity: "0.5" }}
                       onClick={() => setPasswordShown((v) => !v)}
                     />
                   </InputRightElement>
                 </InputField>
               </Box>
               <Button
-                bg="brand.100"
-                isLoading={isSubmitting}
-                my="4"
-                width="100%"
+                size="lg"
+                variant="primary"
                 type="submit"
+                isLoading={isSubmitting}
+                my="10px"
               >
                 Login
               </Button>
