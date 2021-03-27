@@ -30,6 +30,7 @@ export class Project extends BaseEntity {
   @Column()
   authorId!: number;
 
+  @Field(() => User)
   @ManyToOne(() => User, (user) => user.projects)
   author!: User;
 

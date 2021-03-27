@@ -125,9 +125,9 @@ export class ProjectResolver {
     const qb = getConnection()
       .getRepository(Project)
       .createQueryBuilder("p")
-      // pgsql requires non-lowercase fields to be quoted
+      .innerJoinAndSelect("p.author", "u", 'u.id = p."authorId"')
       // Returns newests projects
-      .orderBy('"createdAt"', "DESC")
+      .orderBy("p.createdAt", "DESC")
       // take is better than .limit() for pagination
       .take(realLimitPlusOne);
 
