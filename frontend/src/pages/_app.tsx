@@ -18,7 +18,7 @@ const theme = extendTheme({
   },
   components: {
     // kinda hacky
-    Link: { baseStyle: { color: "teal.500" } },
+    Link: { baseStyle: { color: "brand.100" } },
   },
 });
 
