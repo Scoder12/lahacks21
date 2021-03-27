@@ -28,6 +28,7 @@ function LatestProjects() {
   const [{ data, fetching }] = useProjectsQuery({
     variables: { limit: 1, cursor },
   });
+  console.log(data);
 
   if (fetching) {
     return <Skeletons count={5} />;
@@ -39,7 +40,7 @@ function LatestProjects() {
   return (
     <>
       <Stack>
-        {data.projects.map((i) => (
+        {data.projects.projects.map((i) => (
           <Box key={i.id} p={5} shadow="md" borderWidth="1px">
             <Heading fontSize="xl">{i.title}</Heading>
             <Text mt={4} display="inline">
@@ -55,18 +56,22 @@ function LatestProjects() {
           </Box>
         ))}
       </Stack>
-      <Button
-        onClick={() => {
-          setCursor(
-            data.projects[data.projects.length - 1].createdAt.toString()
-          );
-        }}
-        isLoading={fetching}
-        m="auto"
-        my={8}
-      >
-        Load more
-      </Button>
+      {data.projects.hasMore ? (
+        <Button
+          onClick={() => {
+            setCursor(
+              data.projects.projects[
+                data.projects.projects.length - 1
+              ].createdAt.toString()
+            );
+          }}
+          isLoading={fetching}
+          m="auto"
+          my={8}
+        >
+          Load more
+        </Button>
+      ) : null}
     </>
   );
 }

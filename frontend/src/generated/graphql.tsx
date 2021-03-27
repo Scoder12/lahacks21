@@ -21,7 +21,7 @@ export type Query = {
   categories: Array<Category>;
   categoryById?: Maybe<Category>;
   hello: Scalars['String'];
-  projects: Array<Project>;
+  projects: PaginatedProjects;
   me?: Maybe<User>;
   isAdmin: Scalars['Boolean'];
 };
@@ -64,6 +64,12 @@ export type SnippetResponse = {
   isTrimmed: Scalars['Boolean'];
 };
 
+export type PaginatedProjects = {
+  __typename?: 'PaginatedProjects';
+  projects: Array<Project>;
+  hasMore: Scalars['Boolean'];
+};
+
 export type User = {
   __typename?: 'User';
   id: Scalars['Float'];
@@ -77,7 +83,7 @@ export type User = {
 export type Mutation = {
   __typename?: 'Mutation';
   adminCreateCategory: Category;
-  createProject: ProjectResponse;
+  createProject: CreateProjectResponse;
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
@@ -111,8 +117,8 @@ export type MutationChangeAdminStatusArgs = {
   userId: Scalars['Float'];
 };
 
-export type ProjectResponse = {
-  __typename?: 'ProjectResponse';
+export type CreateProjectResponse = {
+  __typename?: 'CreateProjectResponse';
   errors?: Maybe<Array<FieldError>>;
   project?: Maybe<Project>;
 };
@@ -156,7 +162,7 @@ export type CreateProjectMutationVariables = Exact<{
 export type CreateProjectMutation = (
   { __typename?: 'Mutation' }
   & { createProject: (
-    { __typename?: 'ProjectResponse' }
+    { __typename?: 'CreateProjectResponse' }
     & { errors?: Maybe<Array<(
       { __typename?: 'FieldError' }
       & Pick<FieldError, 'field' | 'message'>
@@ -245,14 +251,18 @@ export type ProjectsQueryVariables = Exact<{
 
 export type ProjectsQuery = (
   { __typename?: 'Query' }
-  & { projects: Array<(
-    { __typename?: 'Project' }
-    & Pick<Project, 'id' | 'createdAt' | 'title' | 'categoryId'>
-    & { snippet: (
-      { __typename?: 'SnippetResponse' }
-      & Pick<SnippetResponse, 'content' | 'isTrimmed'>
-    ) }
-  )> }
+  & { projects: (
+    { __typename?: 'PaginatedProjects' }
+    & Pick<PaginatedProjects, 'hasMore'>
+    & { projects: Array<(
+      { __typename?: 'Project' }
+      & Pick<Project, 'id' | 'createdAt' | 'title' | 'categoryId'>
+      & { snippet: (
+        { __typename?: 'SnippetResponse' }
+        & Pick<SnippetResponse, 'isTrimmed' | 'content'>
+      ) }
+    )> }
+  ) }
 );
 
 export const UserFragmentFragmentDoc = gql`
@@ -347,14 +357,17 @@ export function useMeQuery(options: Omit<Urql.UseQueryArgs<MeQueryVariables>, 'q
 export const ProjectsDocument = gql`
     query Projects($categoryId: Int, $limit: Float!, $cursor: String) {
   projects(category: $categoryId, limit: $limit, cursor: $cursor) {
-    id
-    createdAt
-    title
-    snippet {
-      content
-      isTrimmed
+    hasMore
+    projects {
+      id
+      createdAt
+      title
+      snippet {
+        isTrimmed
+        content
+      }
+      categoryId
     }
-    categoryId
   }
 }
     `;

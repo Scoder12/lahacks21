@@ -38,16 +38,23 @@ const cursorPagination = (): Resolver => {
     const fieldKey = cache.keyOfField(fieldName, fieldArgs);
     if (!fieldKey)
       throw new Error("Unexpected state: Unable to generate fieldKey");
-    const isItInTheCache = cache.resolve(entityKey, fieldKey);
+    const isItInTheCache = cache.resolve(
+      cache.resolve(entityKey, fieldKey) as string,
+      "projects"
+    );
     info.partial = !isItInTheCache;
 
     const results: string[] = [];
+    let hasMore = true;
     fieldInfos.forEach((fi) => {
-      const data = cache.resolve(entityKey, fi.fieldKey) as string[];
+      console.log(fi);
+      const key = cache.resolve(entityKey, fi.fieldKey) as string;
+      hasMore = hasMore && (cache.resolve(key, "hasMore") as boolean);
+      const data = cache.resolve(key, "projects") as string[];
       results.push(...data);
     });
 
-    return results;
+    return { __typename: "PaginatedProjects", hasMore, projects: results };
   };
 };
 
@@ -60,6 +67,7 @@ export const createUrqlClient = (ssrExchange: any) => ({
     cacheExchange({
       keys: {
         PaginatedProjects: () => null,
+        SnippetResponse: () => null,
       },
       resolvers: {
         Query: {

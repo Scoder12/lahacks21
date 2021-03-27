@@ -1,12 +1,15 @@
 query Projects($categoryId: Int, $limit: Float!, $cursor: String) {
   projects(category: $categoryId, limit: $limit, cursor: $cursor) {
-    id
-    createdAt
-    title
-    snippet {
-      content
-      isTrimmed
+    hasMore
+    projects {
+      id
+      createdAt
+      title
+      snippet {
+        isTrimmed
+        content
+      }
+      categoryId
     }
-    categoryId
   }
 }

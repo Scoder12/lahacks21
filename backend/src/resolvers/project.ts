@@ -36,7 +36,7 @@ export class ProjectInput {
 }
 
 @ObjectType()
-export class ProjectResponse {
+export class CreateProjectResponse {
   @Field(() => [FieldError], { nullable: true })
   errors?: FieldError[];
 
@@ -53,6 +53,15 @@ export class SnippetResponse {
   isTrimmed: boolean;
 }
 
+@ObjectType()
+export class PaginatedProjects {
+  @Field(() => [Project])
+  projects: Project[];
+
+  @Field()
+  hasMore: boolean;
+}
+
 @Resolver(Project)
 export class ProjectResolver {
   @FieldResolver()
@@ -63,12 +72,12 @@ export class ProjectResolver {
     };
   }
 
-  @Mutation(() => ProjectResponse)
+  @Mutation(() => CreateProjectResponse)
   @UseMiddleware(authed)
   async createProject(
     @Arg("input") { title, text, categoryId }: ProjectInput,
     @Ctx() { req }: ResolverContext
-  ): Promise<ProjectResponse> {
+  ): Promise<CreateProjectResponse> {
     if (title.length > MAX_TITLE_LENGTH) {
       return {
         errors: [
@@ -101,15 +110,18 @@ export class ProjectResolver {
     };
   }
 
-  @Query(() => [Project])
-  projects(
+  @Query(() => PaginatedProjects)
+  async projects(
     @Arg("category", () => Int, { nullable: true }) category: number | null,
     @Arg("limit") limit: number,
     // cursor is too big to be an Int, so accept a string and parseInt it
     @Arg("cursor", () => String, { nullable: true }) cursor: string | null
-  ): Promise<Project[]> {
-    // Cap limit at 50 so that entire database can't be fetched with a single query
+  ): Promise<PaginatedProjects> {
+    // Cap limit at 50 so that entire database can't be fetched with a single query.
     const realLimit = Math.min(limit, 50);
+    // +1 allows us to determine hasMore
+    const realLimitPlusOne = realLimit + 1;
+
     const qb = getConnection()
       .getRepository(Project)
       .createQueryBuilder("p")
@@ -117,7 +129,7 @@ export class ProjectResolver {
       // Returns newests projects
       .orderBy('"createdAt"', "DESC")
       // take is better than .limit() for pagination
-      .take(realLimit);
+      .take(realLimitPlusOne);
 
     if (category) {
       qb.where('"categoryId" = :category', { category });
@@ -129,6 +141,10 @@ export class ProjectResolver {
       qb.where('"createdAt" < :cursor', { cursor: new Date(cursorMs) });
     }
 
-    return qb.getMany();
+    const projects = await qb.getMany();
+    return {
+      projects: projects.slice(0, realLimit),
+      hasMore: projects.length == realLimitPlusOne,
+    };
   }
 }
