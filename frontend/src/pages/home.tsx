@@ -26,7 +26,7 @@ const Skeletons: FC<SkeletonsProps> = ({ count = 3 }: SkeletonsProps) => {
 function LatestProjects() {
   const [cursor, setCursor] = useState<string | null>(null);
   const [{ data, fetching }] = useProjectsQuery({
-    variables: { limit: 1, cursor },
+    variables: { limit: 10, cursor },
   });
   console.log(data);
 
