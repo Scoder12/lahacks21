@@ -34,24 +34,6 @@ const UpdateProfileForm = ({
 }) => {
   const [, updateBio] = useUpdateBioMutation();
   const router = useRouter();
-  const [bioQuery] = useBioQuery();
-
-  if (bioQuery.fetching) {
-    return <Skeletons count={5} />;
-  } else if (bioQuery.error) {
-    return <Text>{bioQuery.error.message}</Text>;
-  } else if (!bioQuery.data || !bioQuery.data.me) {
-    return <Text>Error: Invalid data received from server</Text>;
-  }
-  const {
-    firstName,
-    lastName,
-    username,
-    school,
-    location,
-    bio,
-  } = bioQuery?.data?.me;
-
   const handleSubmit = async (values: any, { setErrors }: any) => {
     console.log(values);
     // hack
@@ -82,28 +64,24 @@ const UpdateProfileForm = ({
                       type="text"
                       name="firstName"
                       placeholder="First Name"
-                      value={firstName}
                     />
                     <InputField
                       type="text"
                       name="lastName"
                       placeholder="Last Name"
-                      value={lastName}
                     />
                     <InputField
                       type="text"
                       name="school"
                       placeholder="School"
-                      value={school}
                     />
                     <InputField
                       type="text"
                       name="location"
                       placeholder="Location"
-                      value={location}
                     />
                   </Grid>
-                  <TextareaField name="bio" placeholder="Bio" value={bio} />
+                  <TextareaField name="bio" placeholder="Bio" />
                   <InputField
                     type="text"
                     name="link"
