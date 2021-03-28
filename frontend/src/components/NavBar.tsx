@@ -13,8 +13,8 @@ export const NavBar: FC<NavBarProps> = ({}: NavBarProps) => {
   if (data?.me) {
     // User is logged in
     body = (
-      <Flex flex="2" justifyContent="space-between" ml="50px">
-        <Box mt="5px">
+      <Flex flex="2" justifyContent="space-between" align="center" ml="50px">
+        <Box>
           <NextLink href="/challenges" passHref>
             <Link mr="30px" href="#">
               Challenges

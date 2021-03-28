@@ -17,7 +17,7 @@ import { createUrqlClient } from "src/utils/createUrqlClient";
 import { toErrorMap } from "src/utils/toErrorMap";
 import { useRequireLogin } from "src/utils/useRequireLogin";
 
-function CreateProject() {
+function CreateChallenge() {
   useRequireLogin();
   const router = useRouter();
   const [{ data: categoryData, fetching }] = useCategoriesQuery();
@@ -27,7 +27,7 @@ function CreateProject() {
     <>
       <NavBar />
       <Wrapper>
-        <Text variant="h1">Create Project</Text>
+        <Text variant="h1">Create Challenge</Text>
         <Formik
           initialValues={{ title: "", text: "", categoryId: -1 }}
           onSubmit={async (stringValues, { setErrors }) => {
@@ -54,12 +54,12 @@ function CreateProject() {
             <Form>
               <InputField
                 name="title"
-                placeholder="The title of your project"
+                placeholder="The title of your Challenge"
                 label="Title"
               />
               <TextareaField
                 name="text"
-                placeholder="Give your project a description"
+                placeholder="Give your challenge a description"
                 label="Content"
                 chakraProps={{ h: "20rem" }}
               />
@@ -70,7 +70,6 @@ function CreateProject() {
                   chakraProps={{ mb: "2" }}
                 >
                   <option value={-1}>Select a category</option>
-                  <option value={1}>Fron-end</option>
                   {categoryData.categories.map((i) => (
                     <option key={i.id} value={i.id}>
                       {i.name}
@@ -105,4 +104,4 @@ function CreateProject() {
   );
 }
 
-export default withUrqlClient(createUrqlClient)(CreateProject);
+export default withUrqlClient(createUrqlClient)(CreateChallenge);
