@@ -12,7 +12,17 @@ import Wrapper from "src/components/Wrapper";
 import { useBioQuery } from "src/generated/graphql";
 import { createUrqlClient } from "src/utils/createUrqlClient";
 
-const UpdateProfileForm = () => {
+const UpdateProfileForm = ({
+  data,
+}: {
+  data: {
+    firstName: string;
+    lastName: string;
+    school: string;
+    location: string;
+    bio: string;
+  };
+}) => {
   const router = useRouter();
   const handleSubmit = async (values: any, { setErrors }: any) => {
     console.log(values);
@@ -26,15 +36,7 @@ const UpdateProfileForm = () => {
         <Text variant="h1" mb={4}>
           Customize Your Profile
         </Text>
-        <Formik
-          initialValues={{
-            firstName: "",
-            lastName: "",
-            school: "",
-            location: "",
-          }}
-          onSubmit={handleSubmit}
-        >
+        <Formik initialValues={data} onSubmit={handleSubmit}>
           {({ isSubmitting }) => (
             <Form>
               <Flex>
@@ -109,6 +111,11 @@ const Profile = () => {
   if (fetching) {
     inner = <Skeletons count={5} />;
   } else if (error) {
+    inner = <Text>{error.message}</Text>;
+  } else if (!data || !data.me) {
+    inner = <Text>Error: Invalid data received from server</Text>;
+  } else {
+    inner = <UpdateProfileForm data={data.me} />;
   }
 
   return (
