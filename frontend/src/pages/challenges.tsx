@@ -21,7 +21,7 @@ const Challenges = () => {
           <Button variant="secondary">
             <FiFilter style={{ marginRight: "5px" }} /> Filter
           </Button>
-          <NextLink href="/create-project" passHref>
+          <NextLink href="/create-challenge" passHref>
             <Button variant="primary" ml="auto">
               <BsPencilSquare style={{ marginRight: "5px" }} />
               Create Challenge

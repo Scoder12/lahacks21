@@ -4,16 +4,21 @@ import { Box, Flex, Grid, Text } from "@chakra-ui/layout";
 import { Form, Formik } from "formik";
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import InputField from "src/components/InputField";
 import NavBar from "src/components/NavBar";
+import Skeletons from "src/components/Skeletons";
+import TextareaField from "src/components/TextareaField";
+import Wrapper from "src/components/Wrapper";
+import { useBioQuery } from "src/generated/graphql";
 import { createUrqlClient } from "src/utils/createUrqlClient";
 
-const Profile = () => {
+const EditProfile = () => {
+  const [profileUrl, setProfileUrl] = useState("/user.svg");
   const router = useRouter();
   const handleSubmit = async (values: any, { setErrors }: any) => {
     console.log(values);
-    router.push("/projects");
+    router.push("/profile");
   };
 
   return (
@@ -24,7 +29,12 @@ const Profile = () => {
           Customize Your Profile
         </Text>
         <Formik
-          initialValues={{ email: "", username: "", password: "" }}
+          initialValues={{
+            firstName: "",
+            lastName: "",
+            school: "",
+            location: "",
+          }}
           onSubmit={handleSubmit}
         >
           {({ isSubmitting }) => (
@@ -44,25 +54,16 @@ const Profile = () => {
                     />
                     <InputField
                       type="text"
-                      name="university"
-                      placeholder="University/School"
+                      name="school"
+                      placeholder="School"
                     />
                     <InputField
                       type="text"
-                      name="degree"
-                      placeholder="Degree"
-                    />
-                    <InputField
-                      type="text"
-                      name="Occupation"
-                      placeholder="Occupation"
+                      name="location"
+                      placeholder="Location"
                     />
                   </Grid>
-                  <InputField
-                    type="text"
-                    name="country"
-                    placeholder="Country"
-                  />
+                  <TextareaField name="bio" placeholder="Bio" />
                   <InputField type="text" name="skills" placeholder="Skills" />
                   <InputField
                     type="text"
@@ -77,18 +78,28 @@ const Profile = () => {
                   rounded="20px"
                   m="0 20px"
                 >
-                  <Box w="70%" m="auto" rounded="50%" bg="brand.100" p="10px">
-                    <Image src="/user.svg" alt="Profile" />
+                  <Box m="auto" rounded="50%" bg="brand.100" p="5px">
+                    <Image
+                      src={profileUrl}
+                      alt="Profile"
+                      w="13rem"
+                      h="13rem"
+                      objectFit="cover"
+                      rounded="50%"
+                      m="auto"
+                    />
                   </Box>
                   <InputField
                     type="url"
                     name="profileImgUrl"
                     placeholder="Prophile Photo URL"
+                    onChange={(e) => setProfileUrl(e.target.value)}
                   />
                 </Flex>
               </Flex>
               <Button
                 variant="primary"
+                size="sm"
                 display="block"
                 margin="1rem auto"
                 type="submit"
@@ -104,4 +115,21 @@ const Profile = () => {
   );
 };
 
-export default withUrqlClient(createUrqlClient)(Profile);
+const Profile = () => {
+  const [{ data, error, fetching }] = useBioQuery();
+
+  let inner;
+  if (fetching) {
+    inner = <Skeletons count={5} />;
+  } else if (error) {
+  }
+
+  return (
+    <>
+      <NavBar />
+      <Wrapper>{inner}</Wrapper>
+    </>
+  );
+};
+
+export default withUrqlClient(createUrqlClient)(EditProfile);

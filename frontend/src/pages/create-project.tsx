@@ -61,7 +61,7 @@ function CreateProject() {
                 name="text"
                 placeholder="Give your project a description"
                 label="Content"
-                chakraProps={{ mb: "2" }}
+                chakraProps={{ h: "20rem" }}
               />
               {categoryData ? (
                 <SelectField
@@ -70,6 +70,7 @@ function CreateProject() {
                   chakraProps={{ mb: "2" }}
                 >
                   <option value={-1}>Select a category</option>
+                  <option value={1}>Fron-end</option>
                   {categoryData.categories.map((i) => (
                     <option key={i.id} value={i.id}>
                       {i.name}
@@ -83,6 +84,7 @@ function CreateProject() {
                 <Button
                   isLoading={isSubmitting}
                   variant="primary"
+                  size="sm"
                   type="submit"
                   // Can't submit until categories are ready
                   disabled={fetching}
@@ -90,7 +92,9 @@ function CreateProject() {
                   Create
                 </Button>
                 <NextLink href="/projects" passHref>
-                  <Button variant="secondary">Cancel</Button>
+                  <Button variant="secondary" size="sm">
+                    Cancel
+                  </Button>
                 </NextLink>
               </Flex>
             </Form>

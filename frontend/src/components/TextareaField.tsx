@@ -11,7 +11,7 @@ import React, { FC, PropsWithChildren, TextareaHTMLAttributes } from "react";
 
 export type TextareaFieldProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   name: string;
-  label: string;
+  label?: string;
   textarea?: boolean;
   chakraProps?: TextareaProps;
 };
@@ -26,7 +26,7 @@ export const TextareaField: FC<TextareaFieldProps> = ({
   const [field, { error }] = useField(props);
 
   return (
-    <FormControl isInvalid={!!error}>
+    <FormControl mb="10px" isInvalid={!!error}>
       <FormLabel htmlFor={field.name}>{label}</FormLabel>
       <InputGroup size="md">
         <Textarea {...field} {...props} {...chakraProps} id={field.name} />

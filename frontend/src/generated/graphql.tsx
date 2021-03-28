@@ -69,6 +69,12 @@ export type User = {
   id: Scalars['Float'];
   username: Scalars['String'];
   email: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  school: Scalars['String'];
+  location: Scalars['String'];
+  bio: Scalars['String'];
+  link: Scalars['String'];
   projects: Array<Project>;
   createdAt: Scalars['Timestamp'];
   updatedAt: Scalars['Timestamp'];
@@ -95,6 +101,7 @@ export type Mutation = {
   login: UserResponse;
   logout: Scalars['Boolean'];
   changeAdminStatus: Scalars['Boolean'];
+  updateBio: Scalars['Boolean'];
 };
 
 
@@ -122,6 +129,11 @@ export type MutationLoginArgs = {
 export type MutationChangeAdminStatusArgs = {
   isAdmin: Scalars['Boolean'];
   userId: Scalars['Float'];
+};
+
+
+export type MutationUpdateBioArgs = {
+  input: BioInput;
 };
 
 export type CreateProjectResponse = {
@@ -152,6 +164,15 @@ export type RegistrationInput = {
   email: Scalars['String'];
   username: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type BioInput = {
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  school: Scalars['String'];
+  location: Scalars['String'];
+  bio: Scalars['String'];
+  link: Scalars['String'];
 };
 
 export type UserFragmentFragment = (
@@ -225,6 +246,27 @@ export type RegisterMutation = (
       & Pick<FieldError, 'field' | 'message'>
     )>> }
   ) }
+);
+
+export type UpdateBioMutationVariables = Exact<{
+  input: BioInput;
+}>;
+
+
+export type UpdateBioMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'updateBio'>
+);
+
+export type BioQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type BioQuery = (
+  { __typename?: 'Query' }
+  & { me?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'firstName' | 'lastName' | 'school' | 'location' | 'bio' | 'link'>
+  )> }
 );
 
 export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
@@ -350,6 +392,31 @@ export const RegisterDocument = gql`
 
 export function useRegisterMutation() {
   return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const UpdateBioDocument = gql`
+    mutation UpdateBio($input: BioInput!) {
+  updateBio(input: $input)
+}
+    `;
+
+export function useUpdateBioMutation() {
+  return Urql.useMutation<UpdateBioMutation, UpdateBioMutationVariables>(UpdateBioDocument);
+};
+export const BioDocument = gql`
+    query Bio {
+  me {
+    firstName
+    lastName
+    school
+    location
+    bio
+    link
+  }
+}
+    `;
+
+export function useBioQuery(options: Omit<Urql.UseQueryArgs<BioQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<BioQuery>({ query: BioDocument, ...options });
 };
 export const CategoriesDocument = gql`
     query Categories {

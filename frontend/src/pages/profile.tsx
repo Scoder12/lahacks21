@@ -7,14 +7,17 @@ import React from "react";
 import { FaSchool } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 import NavBar from "src/components/NavBar";
+import { useBioQuery } from "src/generated/graphql";
 import { createUrqlClient } from "src/utils/createUrqlClient";
 
 const Profile = () => {
-  const { name, username, school, location } = {
+  const { name, username, school, location, bio } = {
     name: "Ken Johnson",
     username: "ken",
     school: "University of British Columbia",
     location: "Vancouver, Canada",
+    bio:
+      "Exercitation qui tempor adipisicing laboris amet occaecat exercitation veniam quis tempor culpa eiusmod occaecat.",
   };
 
   return (
@@ -32,6 +35,9 @@ const Profile = () => {
       <Text variant="h1">{name}</Text>
       <Text textAlign="center" color="brand.100" fontSize="20px">
         @{username}
+      </Text>
+      <Text w="600px" m="10px auto 0" color="#aaa">
+        {bio}
       </Text>
       <Flex w="500px" justify="space-between" m="20px auto">
         <Flex align="center">

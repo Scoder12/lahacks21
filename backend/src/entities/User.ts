@@ -28,6 +28,33 @@ export class User extends BaseEntity {
   @Column()
   password!: string;
 
+  // BIO
+  @Field()
+  @Column({ default: "" })
+  firstName!: string;
+
+  @Field()
+  @Column({ default: "" })
+  lastName!: string;
+
+  @Field()
+  @Column({ default: "" })
+  school!: string;
+
+  @Field()
+  @Column({ default: "" })
+  location!: string;
+
+  @Field()
+  @Column({ default: "" })
+  bio!: string;
+
+  @Field()
+  @Column({ default: "" })
+  link!: string;
+
+  // END BIO
+
   @Column({ default: false })
   isAdmin!: boolean;
 
