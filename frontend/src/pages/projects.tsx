@@ -3,6 +3,8 @@ import { Box, Flex, Heading, Link, Stack, Text } from "@chakra-ui/layout";
 import { withUrqlClient } from "next-urql";
 import NextLink from "next/link";
 import { useState } from "react";
+import { BsPencilSquare } from "react-icons/bs";
+import { FiFilter } from "react-icons/fi";
 import NavBar from "src/components/NavBar";
 import Skeletons from "src/components/Skeletons";
 import Wrapper from "src/components/Wrapper";
@@ -71,9 +73,14 @@ function ProjectsPage() {
           Latest Projects
         </Text>
         <Flex align="center">
-          <Text>Filter</Text>
+          <Button variant="secondary">
+            <FiFilter style={{ marginRight: "5px" }} /> Filter
+          </Button>
           <NextLink href="/create-project" passHref>
-            <Link ml="auto">Create new project</Link>
+            <Button variant="primary" ml="auto">
+              <BsPencilSquare style={{ marginRight: "5px" }} />
+              Create Project
+            </Button>
           </NextLink>
         </Flex>
         <LatestProjects />

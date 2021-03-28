@@ -1,6 +1,7 @@
-import { Button, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { withUrqlClient } from "next-urql";
+import NextLink from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import InputField from "src/components/InputField";
@@ -26,6 +27,7 @@ function CreateProject() {
     <>
       <NavBar />
       <Wrapper>
+        <Text variant="h1">Create Project</Text>
         <Formik
           initialValues={{ title: "", text: "", categoryId: -1 }}
           onSubmit={async (stringValues, { setErrors }) => {
@@ -77,17 +79,20 @@ function CreateProject() {
               ) : (
                 <Text>Categories Loading...</Text>
               )}
-              <Button
-                colorScheme="blue"
-                isLoading={isSubmitting}
-                mt="4"
-                width="100%"
-                type="submit"
-                // Can't submit until categories are ready
-                disabled={fetching}
-              >
-                Create Project
-              </Button>
+              <Flex justifyContent="space-between">
+                <Button
+                  isLoading={isSubmitting}
+                  variant="primary"
+                  type="submit"
+                  // Can't submit until categories are ready
+                  disabled={fetching}
+                >
+                  Create
+                </Button>
+                <NextLink href="/projects" passHref>
+                  <Button variant="secondary">Cancel</Button>
+                </NextLink>
+              </Flex>
             </Form>
           )}
         </Formik>
