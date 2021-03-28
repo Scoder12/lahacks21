@@ -3,13 +3,22 @@ import { Image } from "@chakra-ui/image";
 import { Box, Flex, Grid, Text } from "@chakra-ui/layout";
 import { Form, Formik } from "formik";
 import { withUrqlClient } from "next-urql";
+import { useRouter } from "next/router";
 import React from "react";
 import InputField from "src/components/InputField";
 import NavBar from "src/components/NavBar";
 import Skeletons from "src/components/Skeletons";
+import TextareaField from "src/components/TextareaField";
 import Wrapper from "src/components/Wrapper";
-import { useBioQuery } from "src/generated/graphql";
+import { useBioQuery, useUpdateBioMutation } from "src/generated/graphql";
 import { createUrqlClient } from "src/utils/createUrqlClient";
+import { useRequireLogin } from "src/utils/useRequireLogin";
+
+const noTypename = (o: Record<string, any>): Record<string, any> => {
+  delete o.id;
+  delete o.__typename;
+  return o;
+};
 
 const UpdateProfileForm = ({
   data,
@@ -22,15 +31,24 @@ const UpdateProfileForm = ({
     bio: string;
   };
 }) => {
-  //const router = useRouter();
+  const [, updateBio] = useUpdateBioMutation();
+  const router = useRouter();
   const handleSubmit = async (values: any, { setErrors }: any) => {
     console.log(values);
-    //router.push("/projects");
+    // hack
+    const { error } = await updateBio({ input: noTypename(values) as any });
+
+    if (error) {
+      console.log(error.message);
+      setErrors({ firstName: error.message });
+      return;
+    }
+
+    router.push("/projects");
   };
 
   return (
     <>
-      <NavBar />
       <Box w="800px" maxW="90%" m="auto" mt="5vh">
         <Text variant="h1" mb={4}>
           Customize Your Profile
@@ -62,10 +80,10 @@ const UpdateProfileForm = ({
                       placeholder="Location"
                     />
                   </Grid>
-                  <InputField type="text" name="skills" placeholder="Skills" />
+                  <TextareaField name="bio" label="Bio" placeholder="Bio" />
                   <InputField
                     type="text"
-                    name="profileLink"
+                    name="link"
                     placeholder="Profile Link"
                   />
                 </Flex>
@@ -81,7 +99,7 @@ const UpdateProfileForm = ({
                   </Box>
                   <InputField
                     type="url"
-                    name="profileImgUrl"
+                    name="imgUrl"
                     placeholder="Prophile Photo URL"
                   />
                 </Flex>
@@ -104,6 +122,7 @@ const UpdateProfileForm = ({
 };
 
 const EditProfile = () => {
+  useRequireLogin();
   const [{ data, error, fetching }] = useBioQuery();
 
   let inner;
