@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   Heading,
+  Image,
   List,
   ListIcon,
   ListItem,
@@ -29,10 +30,31 @@ export interface IndexProps {}
 export const Index: FC<IndexProps> = ({}: IndexProps) => {
   return (
     <>
+      <Image
+        src="/hero.png"
+        alt="Hero"
+        w="100vw"
+        h="100vh"
+        objectFit="cover"
+        position="absolute"
+        zIndex="-1"
+      />
       <NavBar />
-      <Flex flexDirection="column">
+      <Box
+        w="100vw"
+        h="50px"
+        bgGradient="linear(to-b, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0))"
+      />
+      <Flex flexDirection="column" mt="15vh">
         <Flex flex={1} flexDirection="column" justifyContent="space-around">
-          <Box w="80%" mt={20} mx="auto" bg="brand.300" p={10} rounded="lg">
+          <Box
+            w="80%"
+            mx="auto"
+            bg="brand.300"
+            p={10}
+            rounded="lg"
+            opacity="0.8"
+          >
             <Heading size="2xl" fontWeight="light" mb={3}>
               Supercharge your résumé
             </Heading>

@@ -1,32 +1,26 @@
 import { Button } from "@chakra-ui/button";
 import { Image } from "@chakra-ui/image";
-import { InputProps } from "@chakra-ui/input";
 import { Box, Flex, Grid, Text } from "@chakra-ui/layout";
 import { Form, Formik } from "formik";
-import React, { InputHTMLAttributes } from "react";
+import { withUrqlClient } from "next-urql";
+import { useRouter } from "next/router";
+import React from "react";
 import InputField from "src/components/InputField";
 import NavBar from "src/components/NavBar";
-import { useRequireLogin } from "src/utils/useRequireLogin";
-
-export type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
-  name: string;
-  label?: string;
-  textarea?: boolean;
-  chakraProps?: InputProps;
-};
+import { createUrqlClient } from "src/utils/createUrqlClient";
 
 const Profile = () => {
-  // useRequireLogin();
-
+  const router = useRouter();
   const handleSubmit = async (values: any, { setErrors }: any) => {
     console.log(values);
+    router.push("/projects");
   };
 
   return (
     <>
       <NavBar />
-      <Box w="800px" maxW="90%" m="auto" mt="10%">
-        <Text mb={4} fontSize="3xl" fontWeight="bold" align="center">
+      <Box w="800px" maxW="90%" m="auto" mt="5vh">
+        <Text variant="h1" mb={4}>
           Customize Your Profile
         </Text>
         <Formik
@@ -51,7 +45,7 @@ const Profile = () => {
                     <InputField
                       type="text"
                       name="university"
-                      placeholder="University"
+                      placeholder="University/School"
                     />
                     <InputField
                       type="text"
@@ -94,13 +88,11 @@ const Profile = () => {
                 </Flex>
               </Flex>
               <Button
-                bg="brand.100"
-                isLoading={isSubmitting}
-                my="4"
+                variant="primary"
                 display="block"
                 margin="1rem auto"
-                width={110}
                 type="submit"
+                isLoading={isSubmitting}
               >
                 Confirm
               </Button>
@@ -112,4 +104,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default withUrqlClient(createUrqlClient)(Profile);

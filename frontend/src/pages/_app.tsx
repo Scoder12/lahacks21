@@ -3,6 +3,7 @@ import {
   ColorModeProvider,
   extendTheme,
 } from "@chakra-ui/react";
+import { mode } from "@chakra-ui/theme-tools";
 import { AppProps } from "next/dist/next-server/lib/router/router";
 import "../styles/sample_project.css";
 import "../styles/style.css";
@@ -14,7 +15,15 @@ const theme = extendTheme({
       200: "#222",
       300: "#333",
       400: "#eee",
+      500: "#444",
     },
+  },
+  styles: {
+    global: (props) => ({
+      body: {
+        bg: mode("brand.200", "brand.200")(props),
+      },
+    }),
   },
   components: {
     Button: {
@@ -52,12 +61,18 @@ const theme = extendTheme({
     Text: {
       variants: {
         h1: {
+          textAlign: "center",
           fontSize: "30px",
         },
       },
     },
     // kinda hacky
-    Link: { baseStyle: { color: "brand.100", _hover: { color: "brand.100" } } },
+    Link: {
+      baseStyle: {
+        color: "#eee",
+        _hover: { color: "brand.100", textDecoration: "none" },
+      },
+    },
   },
 });
 
