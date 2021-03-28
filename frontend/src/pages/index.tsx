@@ -51,7 +51,7 @@ export const Index: FC<IndexProps> = ({}: IndexProps) => {
                   Register
                 </Button>
               </NextLink>
-              <NextLink href="/about" passHref>
+              <NextLink href="/projects" passHref>
                 <Button px={5} variant="secondary">
                   View projects
                 </Button>
