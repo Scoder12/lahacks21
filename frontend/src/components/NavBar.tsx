@@ -1,5 +1,5 @@
-import { Box, Button, Flex, Image, Text } from "@chakra-ui/react";
-import NextLink from "next/link";
+import { Box, Button, Flex, Image } from "@chakra-ui/react";
+import { default as Link, default as NextLink } from "next/link";
 import { FC, useState } from "react";
 import { useLogoutMutation, useMeQuery } from "src/generated/graphql";
 
@@ -27,8 +27,7 @@ export const NavBar: FC<NavBarProps> = ({}: NavBarProps) => {
 
   const profileDropdown = (
     <Flex
-      h="200px"
-      w="150px"
+      p={5}
       display={showProfileDropdown ? "flex" : "none"}
       position="absolute"
       right="5px"
@@ -39,31 +38,12 @@ export const NavBar: FC<NavBarProps> = ({}: NavBarProps) => {
       // p="20px"
       rounded="5px"
     >
-      <NextLink href="/profile">
-        <Box>
-          <Flex alignItems="center" justifyContent="center">
-            <Image
-              src="https://upload.wikimedia.org/wikipedia/commons/9/94/Robert_Downey_Jr_2014_Comic_Con_%28cropped%29.jpg"
-              alt="Profile"
-              h="30px"
-              w="30px"
-              mr="10px"
-              objectFit="cover"
-              rounded="50%"
-            />
-            {data?.me?.username}
-          </Flex>
-          <Text mt="5px" align="center">
-            My Profile
-          </Text>
-        </Box>
+      <NextLink href="/profile" passHref>
+        <Link href="#">Profile</Link>
       </NextLink>
-      <Text as="a" align="center" onClick={() => logout()}>
-        Settings
-      </Text>
-      <Text as="a" align="center" onClick={() => logout()}>
-        Logout
-      </Text>
+      <NextLink href="/logout" passHref>
+        <Link href="#">Logout</Link>
+      </NextLink>
     </Flex>
   );
 
