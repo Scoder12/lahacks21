@@ -3,6 +3,7 @@ import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import Markdown from "src/components/Markdown";
+import NavBar from "src/components/NavBar";
 import Skeletons from "src/components/Skeletons";
 import Wrapper from "src/components/Wrapper";
 import { useProjectQuery } from "src/generated/graphql";
@@ -47,7 +48,12 @@ const ProjectPage: FC<{}> = () => {
     );
   }
 
-  return <Wrapper>{inner}</Wrapper>;
+  return (
+    <>
+      <NavBar />
+      <Wrapper>{inner}</Wrapper>
+    </>
+  );
 };
 
 export default withUrqlClient(createUrqlClient, { ssr: true })(ProjectPage);
