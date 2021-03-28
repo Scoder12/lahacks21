@@ -7,7 +7,7 @@ import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import { CONFIG, DB } from "./config";
-import { COOKIE_NAME, __PROD__ } from "./constants";
+import { COOKIE_NAME, DEFAULT_CATEGORIES, __PROD__ } from "./constants";
 import { Category } from "./entities/Category";
 import { Project } from "./entities/Project";
 import { User } from "./entities/User";
@@ -48,6 +48,14 @@ async function main() {
     console.log(
       "Not creating an admin account, set ADMIN_PASSWORD to create one."
     );
+  }
+  const categories = await Category.count();
+  if (categories === 0) {
+    console.log("Creating categories");
+    for (const c of DEFAULT_CATEGORIES) {
+      await Category.insert({ name: c });
+    }
+    console.log("Default categories created.");
   }
 
   const app = express();
