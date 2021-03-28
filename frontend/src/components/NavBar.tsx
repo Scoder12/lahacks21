@@ -6,59 +6,9 @@ import { useMeQuery } from "src/generated/graphql";
 export interface NavBarProps {}
 
 export const NavBar: FC<NavBarProps> = ({}: NavBarProps) => {
-  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-  const [profileDropdownPosition, setProfileDropdownPosition] = useState({
-    center: 0,
-    bottom: 0,
-  });
   const [{ data, fetching }] = useMeQuery();
   const homePage = !data?.me ? "/" : "/projects";
   let body = null;
-  const dropdownRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClick);
-    return () => {
-      document.removeEventListener("mousedown", handleClick);
-    };
-  }, []);
-
-  const handleClick = (e: any) => {
-    if (dropdownRef?.current?.contains(e.target)) {
-      return;
-    }
-    setShowProfileDropdown(false);
-  };
-
-  const handleProfileClick = (e: any) => {
-    const buttonRect = e.target.getBoundingClientRect();
-    const center = (buttonRect.left + buttonRect.right) / 2;
-    const bottom = buttonRect.bottom + 20;
-    setProfileDropdownPosition({ center, bottom });
-    setShowProfileDropdown(!showProfileDropdown);
-  };
-
-  const profileDropdown = (
-    <Flex
-      p={5}
-      display={showProfileDropdown ? "flex" : "none"}
-      position="absolute"
-      right="5px"
-      top={`${profileDropdownPosition.bottom}px`}
-      flexDirection="column"
-      justifyContent="space-around"
-      bg="brand.500"
-      rounded="5px"
-      ref={dropdownRef}
-    >
-      <NextLink href="/profile" passHref>
-        <Link href="#">Profile</Link>
-      </NextLink>
-      <NextLink href="/logout" passHref>
-        <Link href="#">Logout</Link>
-      </NextLink>
-    </Flex>
-  );
 
   if (data?.me) {
     // User is logged in
@@ -74,24 +24,27 @@ export const NavBar: FC<NavBarProps> = ({}: NavBarProps) => {
             <Link href="#">Projects</Link>
           </NextLink>
         </Box>
-        <Flex
-          mr="1vw"
-          alignItems="center"
-          _hover={{ cursor: "pointer" }}
-          onClick={handleProfileClick}
-        >
-          <Image
-            src="https://upload.wikimedia.org/wikipedia/commons/9/94/Robert_Downey_Jr_2014_Comic_Con_%28cropped%29.jpg"
-            alt="Profile"
-            h="30px"
-            w="30px"
-            mr="10px"
-            objectFit="cover"
-            rounded="50%"
-          />
-          {data.me.username}
+        <Flex>
+          <NextLink href="/profile">
+            <Flex mr="1vw" alignItems="center" _hover={{ cursor: "pointer" }}>
+              <Image
+                src="https://upload.wikimedia.org/wikipedia/commons/9/94/Robert_Downey_Jr_2014_Comic_Con_%28cropped%29.jpg"
+                alt="Profile"
+                h="30px"
+                w="30px"
+                mr="10px"
+                objectFit="cover"
+                rounded="50%"
+              />
+              {data.me.username}
+            </Flex>
+          </NextLink>
+          <NextLink href="/logout" passHref>
+            <Button variant="secondary" mr="1vw">
+              <Link href="#">Logout</Link>
+            </Button>
+          </NextLink>
         </Flex>
-        {profileDropdown}
       </Flex>
     );
   } else {
