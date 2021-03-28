@@ -5,6 +5,7 @@ import {
   Ctx,
   Field,
   FieldResolver,
+  InputType,
   Mutation,
   ObjectType,
   Query,
@@ -29,6 +30,27 @@ export class UserResponse {
 
   @Field(() => User, { nullable: true })
   user?: User;
+}
+
+@InputType()
+export class BioInput {
+  @Field()
+  firstName!: string;
+
+  @Field()
+  lastName!: string;
+
+  @Field()
+  school!: string;
+
+  @Field()
+  location!: string;
+
+  @Field()
+  bio!: string;
+
+  @Field()
+  link!: string;
 }
 
 @Resolver(User)
@@ -173,6 +195,18 @@ export class UserResolver {
     @Arg("isAdmin") isAdmin: boolean
   ): Promise<boolean> {
     await User.update(userId, { isAdmin });
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  @UseMiddleware(authed)
+  async updateBio(
+    @Arg("input")
+    input: BioInput,
+    @Ctx() { req }: ResolverContext
+  ): Promise<boolean> {
+    if (!req.session.userId) throw new Error("Invalid ID!");
+    await User.update(req.session.userId, input);
     return true;
   }
 }
