@@ -1,7 +1,9 @@
 query Bio {
   me {
+    id
     firstName
     lastName
+    username
     school
     location
     bio

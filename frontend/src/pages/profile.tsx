@@ -7,17 +7,21 @@ import React from "react";
 import { FaSchool } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 import NavBar from "src/components/NavBar";
+import { useBioQuery } from "src/generated/graphql";
 import { createUrqlClient } from "src/utils/createUrqlClient";
 
 const Profile = () => {
-  const { name, username, school, location, bio } = {
-    name: "Ken Johnson",
-    username: "ken",
-    school: "University of British Columbia",
-    location: "Vancouver, Canada",
-    bio:
-      "Exercitation qui tempor adipisicing laboris amet occaecat exercitation veniam quis tempor culpa eiusmod occaecat.",
-  };
+  const [{ data, error, fetching }] = useBioQuery();
+
+  if (fetching) {
+    return <Skeletons count={5} />;
+  } else if (error) {
+    return <Text>{error.message}</Text>;
+  } else if (!data || !data.me) {
+    return <Text>Error: Invalid data received from server</Text>;
+  }
+
+  const { firstName, lastName, username, school, location, bio } = data.me;
 
   return (
     <>
@@ -31,7 +35,7 @@ const Profile = () => {
         rounded="50%"
         margin="10vh auto 1vh"
       />
-      <Text variant="h1">{name}</Text>
+      <Text variant="h1">{`${firstName} ${lastName}`}</Text>
       <Text textAlign="center" color="brand.100" fontSize="20px">
         @{username}
       </Text>

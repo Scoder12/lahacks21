@@ -265,7 +265,7 @@ export type BioQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'firstName' | 'lastName' | 'school' | 'location' | 'bio' | 'link'>
+    & Pick<User, 'id' | 'firstName' | 'lastName' | 'username' | 'school' | 'location' | 'bio' | 'link'>
   )> }
 );
 
@@ -405,8 +405,10 @@ export function useUpdateBioMutation() {
 export const BioDocument = gql`
     query Bio {
   me {
+    id
     firstName
     lastName
+    username
     school
     location
     bio
