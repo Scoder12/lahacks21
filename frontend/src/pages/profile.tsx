@@ -43,14 +43,18 @@ const Profile = () => {
         {bio}
       </Text>
       <Flex w="500px" justify="space-between" m="20px auto">
-        <Flex align="center">
-          <FaSchool />
-          <Text ml="5px">{school}</Text>
-        </Flex>
-        <Flex align="center">
-          <MdLocationOn />
-          <Text ml="3px">{location}</Text>
-        </Flex>
+        {school && (
+          <Flex align="center">
+            <FaSchool />
+            <Text ml="5px">{school}</Text>
+          </Flex>
+        )}
+        {location && (
+          <Flex align="center">
+            <MdLocationOn />
+            <Text ml="3px">{location}</Text>
+          </Flex>
+        )}
       </Flex>
       <NextLink href="edit-profile" passHref>
         <Button variant="primary" size="sm" m="auto" display="block">
