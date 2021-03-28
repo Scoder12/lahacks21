@@ -24,7 +24,12 @@ const Profile = () => {
           Customize Your Profile
         </Text>
         <Formik
-          initialValues={{ email: "", username: "", password: "" }}
+          initialValues={{
+            firstName: "",
+            lastName: "",
+            school: "",
+            location: "",
+          }}
           onSubmit={handleSubmit}
         >
           {({ isSubmitting }) => (
@@ -44,25 +49,15 @@ const Profile = () => {
                     />
                     <InputField
                       type="text"
-                      name="university"
-                      placeholder="University/School"
+                      name="school"
+                      placeholder="School"
                     />
                     <InputField
                       type="text"
-                      name="degree"
-                      placeholder="Degree"
-                    />
-                    <InputField
-                      type="text"
-                      name="Occupation"
-                      placeholder="Occupation"
+                      name="location"
+                      placeholder="Location"
                     />
                   </Grid>
-                  <InputField
-                    type="text"
-                    name="country"
-                    placeholder="Country"
-                  />
                   <InputField type="text" name="skills" placeholder="Skills" />
                   <InputField
                     type="text"
