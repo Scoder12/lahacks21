@@ -66,6 +66,9 @@ export const Index: FC<IndexProps> = ({}: IndexProps) => {
               <CheckItem>Sharpen your skills</CheckItem>
               <CheckItem>Demonstrate your ability</CheckItem>
               <CheckItem>Share your ideas with the world</CheckItem>
+              <CheckItem>
+                Solve problems faced by underrepresented populations
+              </CheckItem>
             </List>
             <Flex mt={7}>
               <NextLink href="/register" passHref>
