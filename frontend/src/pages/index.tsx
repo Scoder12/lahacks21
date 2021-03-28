@@ -56,25 +56,26 @@ export const Index: FC<IndexProps> = ({}: IndexProps) => {
             opacity="0.8"
           >
             <Heading size="2xl" fontWeight="light" mb={3}>
-              Inspire. Innovate. Impact.
+              Supercharge your résumé
             </Heading>
-            <Text mt={5} mb={2}>
-              Join our platform to
+            <Text fontSize="2xl" mt={5} mb={2}>
+              Innopact is a crowd-sourced platform to connect programmers with
+              project ideas
             </Text>
             <List>
-              <CheckItem>Expand your skillset</CheckItem>
-              <CheckItem>Build your network</CheckItem>
-              <CheckItem>Make the world a better place</CheckItem>
+              <CheckItem>Sharpen your skills</CheckItem>
+              <CheckItem>Demonstrate your ability</CheckItem>
+              <CheckItem>Share your ideas with the world</CheckItem>
             </List>
             <Flex mt={7}>
               <NextLink href="/register" passHref>
-                <Button size="sm" variant="primary" mr="1vw">
-                  Get Started
+                <Button px={5} variant="primary" mr="1vw">
+                  Register
                 </Button>
               </NextLink>
-              <NextLink href="/about" passHref>
-                <Button size="sm" variant="secondary">
-                  Learn More
+              <NextLink href="/projects" passHref>
+                <Button px={5} variant="secondary">
+                  View projects
                 </Button>
               </NextLink>
             </Flex>

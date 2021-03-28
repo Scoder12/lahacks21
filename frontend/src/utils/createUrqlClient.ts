@@ -58,10 +58,15 @@ const cursorPagination = (): Resolver => {
   };
 };
 
-export const createUrqlClient = (ssrExchange: any) => ({
+export const createUrqlClient = (ssrExchange: any, ctx: any) => ({
   // TODO: Configure URL for prod
   url: "http://localhost:4000/graphql",
-  fetchOptions: { credentials: "include" as const },
+  fetchOptions: {
+    credentials: "include" as const,
+    headers: {
+      cookie: ctx && ctx.req ? ctx.req.headers.cookie : document.cookie,
+    },
+  },
   exchanges: [
     dedupExchange,
     cacheExchange({

@@ -30,16 +30,20 @@ function LatestProjects() {
       <Stack>
         {data.projects.projects.map((i) => (
           <Box key={i.id} p={5} shadow="md" borderWidth="1px">
-            <Heading fontSize="xl">{i.title}</Heading>
+            <NextLink href={`/p/${i.id}`} passHref>
+              <Link>
+                <Heading fontSize="xl">{i.title}</Heading>
+              </Link>
+            </NextLink>
             <Text mt={4} display="inline">
               {i.snippet.content}
               {i.snippet.isTrimmed ? "..." : ""}
             </Text>
             {/* TODO: Add large post viewing page */}
             {i.snippet.isTrimmed ? (
-              <Link ml={2} href="#">
-                Read more
-              </Link>
+              <NextLink href={`/p/${i.id}`} passHref>
+                <Link ml={2}>Read more</Link>
+              </NextLink>
             ) : null}
           </Box>
         ))}
