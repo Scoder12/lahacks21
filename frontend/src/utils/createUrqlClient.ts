@@ -64,7 +64,12 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => ({
   fetchOptions: {
     credentials: "include" as const,
     headers: {
-      cookie: ctx && ctx.req ? ctx.req.headers.cookie : document.cookie,
+      cookie:
+        ctx && ctx.req
+          ? ctx.req.headers.cookie
+          : typeof window != "undefined" && document
+          ? document.cookie
+          : "",
     },
   },
   exchanges: [
