@@ -7,9 +7,12 @@ import { useRouter } from "next/router";
 import React from "react";
 import InputField from "src/components/InputField";
 import NavBar from "src/components/NavBar";
+import Skeletons from "src/components/Skeletons";
+import Wrapper from "src/components/Wrapper";
+import { useBioQuery } from "src/generated/graphql";
 import { createUrqlClient } from "src/utils/createUrqlClient";
 
-const Profile = () => {
+const UpdateProfileForm = () => {
   const router = useRouter();
   const handleSubmit = async (values: any, { setErrors }: any) => {
     console.log(values);
@@ -95,6 +98,23 @@ const Profile = () => {
           )}
         </Formik>
       </Box>
+    </>
+  );
+};
+
+const Profile = () => {
+  const [{ data, error, fetching }] = useBioQuery();
+
+  let inner;
+  if (fetching) {
+    inner = <Skeletons count={5} />;
+  } else if (error) {
+  }
+
+  return (
+    <>
+      <NavBar />
+      <Wrapper>{inner}</Wrapper>
     </>
   );
 };

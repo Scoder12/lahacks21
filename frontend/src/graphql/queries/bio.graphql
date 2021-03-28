@@ -1,0 +1,10 @@
+query Bio {
+  me {
+    firstName
+    lastName
+    school
+    location
+    bio
+    link
+  }
+}

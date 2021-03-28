@@ -1,0 +1,3 @@
+mutation UpdateBio($input: BioInput!) {
+  updateBio(input: $input)
+}
