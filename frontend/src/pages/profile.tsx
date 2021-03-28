@@ -7,6 +7,7 @@ import React from "react";
 import { FaSchool } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 import NavBar from "src/components/NavBar";
+import Skeletons from "src/components/Skeletons";
 import { useBioQuery } from "src/generated/graphql";
 import { createUrqlClient } from "src/utils/createUrqlClient";
 
