@@ -17,6 +17,7 @@ import { useRequireLogin } from "src/utils/useRequireLogin";
 const noTypename = (o: Record<string, any>): Record<string, any> => {
   delete o.id;
   delete o.__typename;
+  delete o.username;
   return o;
 };
 

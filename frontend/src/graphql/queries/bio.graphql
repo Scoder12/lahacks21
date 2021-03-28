@@ -3,6 +3,7 @@ query Bio {
     id
     firstName
     lastName
+    username
     school
     location
     bio

@@ -265,7 +265,7 @@ export type BioQuery = (
   { __typename?: 'Query' }
   & { me?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'firstName' | 'lastName' | 'school' | 'location' | 'bio' | 'link'>
+    & Pick<User, 'id' | 'firstName' | 'lastName' | 'username' | 'school' | 'location' | 'bio' | 'link'>
   )> }
 );
 
@@ -408,6 +408,7 @@ export const BioDocument = gql`
     id
     firstName
     lastName
+    username
     school
     location
     bio
